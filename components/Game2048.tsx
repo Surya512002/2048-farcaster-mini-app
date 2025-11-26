@@ -16,7 +16,7 @@ type Tile = {
 
 const GRID_SIZE = 4
 
-export default function Game2048({ isSDKLoaded }: { isSDKLoaded: boolean }) {
+export default function Game2048() {
   const [tiles, setTiles] = useState<Tile[]>([])
   const [score, setScore] = useState(0)
   const [bestScore, setBestScore] = useState(0)
@@ -371,7 +371,7 @@ export default function Game2048({ isSDKLoaded }: { isSDKLoaded: boolean }) {
           >
             New Game
           </button>
-          <ShareButton score={score} isSDKLoaded={isSDKLoaded} />
+          <ShareButton score={score} />
         </div>
       </div>
     </div>
