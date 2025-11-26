@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, useCallback } from "react"
 import ShareButton from "./ShareButton"
 import WalletConnect from "./WalletConnect"
@@ -14,9 +13,15 @@ type Tile = {
   isMerged?: boolean
 }
 
+type FarcasterSDK = {
+  actions: {
+    composeCast: (options: { body: string }) => Promise<void>
+  }
+}
+
 const GRID_SIZE = 4
 
-export default function Game2048() {
+export default function Game2048({ sdk, fid }: { sdk: FarcasterSDK | null; fid: number | null }) {
   const [tiles, setTiles] = useState<Tile[]>([])
   const [score, setScore] = useState(0)
   const [bestScore, setBestScore] = useState(0)
@@ -295,8 +300,9 @@ export default function Game2048() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: "Player", // In production, get from user profile
+          name: fid ? `Player ${fid}` : "Anonymous",
           score: finalScore,
+          fid: fid,
         }),
       })
 
@@ -401,7 +407,7 @@ export default function Game2048() {
           >
             New Game
           </button>
-          <ShareButton score={score} />
+          <ShareButton score={score} sdk={sdk} />
         </div>
       </div>
     </div>
