@@ -20,39 +20,16 @@ export default function WagmiProvider({ children }: { children: React.ReactNode 
       typeof window !== "undefined" &&
       (window.location.hostname.includes("vusercontent.net") ||
         window.location.hostname.includes("localhost") ||
-        window.location.hostname.includes("v0.app"))
+        window.location.hostname.includes("127.0.0.1") ||
+        window.parent !== window)
 
-    if (isPreview || !mounted) {
-      return createConfig({
-        chains: [base],
-        transports: {
-          [base.id]: http(),
-        },
-        connectors: [],
-      })
-    }
-
-    try {
-      // This dynamic import will only work after deployment with proper domain
-      const { farcasterFrame } = require("@farcaster/miniapp-wagmi-connector")
-
-      return createConfig({
-        chains: [base],
-        transports: {
-          [base.id]: http(),
-        },
-        connectors: [farcasterFrame()],
-      })
-    } catch (error) {
-      console.log("[v0] Farcaster connector not available, using fallback config")
-      return createConfig({
-        chains: [base],
-        transports: {
-          [base.id]: http(),
-        },
-        connectors: [],
-      })
-    }
+    return createConfig({
+      chains: [base],
+      transports: {
+        [base.id]: http(),
+      },
+      connectors: [], // Empty connectors array - will be added after deployment
+    })
   }, [mounted])
 
   return (

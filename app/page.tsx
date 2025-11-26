@@ -5,22 +5,36 @@ import Game2048 from "@/components/Game2048"
 import WalletConnect from "@/components/WalletConnect"
 import Leaderboard from "@/components/Leaderboard"
 
+const isPreviewEnvironment = () => {
+  if (typeof window === "undefined") return true
+
+  const hostname = window.location.hostname
+  return (
+    hostname.includes("vusercontent.net") ||
+    hostname.includes("localhost") ||
+    hostname.includes("127.0.0.1") ||
+    window.parent !== window // Running in iframe (v0 preview)
+  )
+}
+
 export default function Home() {
   const [sdkLoaded, setSdkLoaded] = useState(false)
 
   useEffect(() => {
     async function initSDK() {
-      try {
-        // Dynamically import SDK to avoid module-level errors
-        const { default: sdk } = await import("@farcaster/frame-sdk")
+      if (isPreviewEnvironment()) {
+        console.log("[v0] Preview environment detected - SDK disabled")
+        setSdkLoaded(false)
+        return
+      }
 
-        // Call ready() to dismiss splash screen
+      try {
+        const { default: sdk } = await import("@farcaster/frame-sdk")
         await sdk.actions.ready()
         console.log("[v0] Farcaster SDK initialized successfully")
         setSdkLoaded(true)
       } catch (error) {
-        // Silently handle errors in preview/development
-        console.log("[v0] Running in standalone mode")
+        console.log("[v0] SDK initialization failed:", error)
         setSdkLoaded(false)
       }
     }
