@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Game2048 from "@/components/Game2048"
-import sdk from "@farcaster/frame-sdk"
 import WalletConnect from "@/components/WalletConnect"
 
 export default function Home() {
@@ -11,14 +10,24 @@ export default function Home() {
 
   useEffect(() => {
     const load = async () => {
+      const isInFrame = window !== window.parent
+
+      // Skip SDK in preview environment
+      if (!isInFrame || window.location.hostname.includes("vusercontent.net")) {
+        console.log("[v0] Running in standalone mode (preview environment)")
+        setIsSDKLoaded(false)
+        return
+      }
+
       try {
+        const { default: sdk } = await import("@farcaster/frame-sdk")
+
         setContext(await sdk.context)
         sdk.actions.ready()
         setIsSDKLoaded(true)
         console.log("[v0] Farcaster SDK loaded successfully")
       } catch (error) {
         console.log("[v0] Not in Farcaster environment or SDK failed:", error)
-        // Continue anyway - app works standalone
         setIsSDKLoaded(false)
       }
     }
