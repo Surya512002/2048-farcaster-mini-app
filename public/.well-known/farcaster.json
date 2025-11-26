@@ -1,17 +1,17 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg0RTk0NjU3RjI0YTk5NEM1NjYzODY0NUY2NENCQ0E4NjQyRDQ5QTlEIn0",
-    "payload": "eyJkb21haW4iOiJ5b3VyLWRvbWFpbi5jb20ifQ",
-    "signature": "MHhhYmNkZWYxMjM0NTY3ODkw"
+    "header": "eyJmaWQiOjI3OTQ3NCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDE0MmY1QzU0OGFBNDY0MzU2MkRkNEQ3NkMxM0Y4YzRBMzM3MDcyOGMifQ",
+    "payload": "eyJkb21haW4iOiIyMDQ4LWZhcmNhc3Rlci1taW5pLWFwcC52ZXJjZWwuYXBwIn0",
+    "signature": "JLsvg/GQ8muk3DgbGp1QNs40QYr2Aj56olr2pt0nTtkyIxDRzBahWF/Qi3n5aKLAUpQmT7Qai8+kU1ojlulD0xs="
   },
   "frame": {
     "version": "next",
     "name": "2048 Mini App",
-    "iconUrl": "https://your-domain.com/icon.png",
-    "homeUrl": "https://your-domain.com",
-    "imageUrl": "https://your-domain.com/og-image.png",
-    "splashImageUrl": "https://your-domain.com/splash.png",
+    "iconUrl": "https://2048-farcaster-mini-app.vercel.app/icon.png",
+    "homeUrl": "https://2048-farcaster-mini-app.vercel.app",
+    "imageUrl": "https://2048-farcaster-mini-app.vercel.app/og-image.png",
+    "splashImageUrl": "https://2048-farcaster-mini-app.vercel.app/splash.png",
     "splashBackgroundColor": "#faf8ef",
-    "webhookUrl": "https://your-domain.com/api/webhook"
+    "webhookUrl": "https://2048-farcaster-mini-app.vercel.app/api/webhook"
   }
 }

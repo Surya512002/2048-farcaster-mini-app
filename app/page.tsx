@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Game2048 from "@/components/Game2048"
 import WalletConnect from "@/components/WalletConnect"
+import Leaderboard from "@/components/Leaderboard"
 
 export default function Home() {
   const [sdkLoaded, setSdkLoaded] = useState(false)
@@ -41,7 +42,10 @@ export default function Home() {
         {sdkLoaded && <p className="mt-2 text-xs text-green-600">Connected to Farcaster</p>}
       </div>
 
-      <Game2048 />
+      <div className="mt-8 flex flex-col items-center gap-6 lg:flex-row lg:items-start">
+        <Game2048 />
+        <Leaderboard />
+      </div>
     </main>
   )
 }

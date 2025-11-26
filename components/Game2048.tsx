@@ -284,6 +284,36 @@ export default function Game2048() {
     return value <= 4 ? "#776e65" : "#f9f6f2"
   }
 
+  // API integration for score submission
+  const submitScore = async (finalScore: number) => {
+    if (finalScore === 0) return
+
+    try {
+      const response = await fetch("/api/leaderboard", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: "Player", // In production, get from user profile
+          score: finalScore,
+        }),
+      })
+
+      if (response.ok) {
+        console.log("[v0] Score submitted successfully")
+      }
+    } catch (error) {
+      console.error("[v0] Failed to submit score:", error)
+    }
+  }
+
+  useEffect(() => {
+    if (gameOver && score > 0) {
+      submitScore(score)
+    }
+  }, [gameOver, score])
+
   return (
     <div className="flex flex-col items-center gap-4">
       <WalletConnect />
