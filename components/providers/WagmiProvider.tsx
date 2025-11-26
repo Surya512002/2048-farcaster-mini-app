@@ -4,7 +4,7 @@ import type React from "react"
 
 import { WagmiProvider as WagmiProviderOriginal, createConfig, http } from "wagmi"
 import { base } from "wagmi/chains"
-import { injected, coinbaseWallet } from "wagmi/connectors"
+import { injected } from "wagmi/connectors"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { useState, useMemo, useEffect } from "react"
 
@@ -26,11 +26,7 @@ export default function WagmiProvider({ children }: { children: React.ReactNode 
         injected({
           target: "metaMask",
         }),
-        coinbaseWallet({
-          appName: "2048 Farcaster Mini App",
-          preference: "all",
-        }),
-        injected(), // Fallback for other injected wallets
+        injected(), // Works with any injected wallet (MetaMask, Coinbase Wallet, Rabby, etc.)
       ],
     })
   }, [mounted])
