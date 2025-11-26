@@ -17,17 +17,30 @@ export default function WagmiProvider({ children }: { children: React.ReactNode 
   }, [])
 
   const config = useMemo(() => {
+    const connectorsList = [
+      injected({
+        target: "metaMask",
+      }),
+      injected(), // Works with any injected wallet (MetaMask, Coinbase Wallet, Rabby, etc.)
+    ]
+
+    // Only add Farcaster connector when mounted (client-side) and not in preview
+    if (mounted && typeof window !== "undefined" && !window.location.hostname.includes("vusercontent.net")) {
+      try {
+        // Dynamic import to avoid SSR issues
+        const { farcasterFrame } = require("@farcaster/miniapp-wagmi-connector")
+        connectorsList.push(farcasterFrame())
+      } catch (error) {
+        console.log("[v0] Farcaster connector not available in this environment")
+      }
+    }
+
     return createConfig({
       chains: [base],
       transports: {
         [base.id]: http(),
       },
-      connectors: [
-        injected({
-          target: "metaMask",
-        }),
-        injected(), // Works with any injected wallet (MetaMask, Coinbase Wallet, Rabby, etc.)
-      ],
+      connectors: connectorsList,
     })
   }, [mounted])
 

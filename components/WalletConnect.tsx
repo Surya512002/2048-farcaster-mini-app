@@ -12,6 +12,7 @@ export default function WalletConnect() {
   const getConnectorName = (name: string) => {
     if (name.toLowerCase().includes("metamask")) return "MetaMask"
     if (name.toLowerCase().includes("coinbase")) return "Coinbase Wallet"
+    if (name.toLowerCase().includes("farcaster")) return "Farcaster Wallet"
     if (name.toLowerCase().includes("injected")) return "Browser Wallet"
     return name
   }
