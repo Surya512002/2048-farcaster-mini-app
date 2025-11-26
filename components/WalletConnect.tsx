@@ -12,7 +12,9 @@ export default function WalletConnect() {
   useEffect(() => {
     const preview =
       typeof window !== "undefined" &&
-      (window.location.hostname.includes("vusercontent.net") || window.location.hostname.includes("localhost"))
+      (window.location.hostname.includes("vusercontent.net") ||
+        window.location.hostname.includes("localhost") ||
+        window.location.hostname.includes("v0.app"))
     setIsPreview(preview)
   }, [])
 
@@ -21,9 +23,9 @@ export default function WalletConnect() {
       <button
         disabled
         className="rounded-lg bg-[#bbada0] px-4 py-2 text-sm font-bold text-white opacity-50 cursor-not-allowed"
-        title="Wallet connection available after deployment"
+        title="Wallet connection available after deployment to your domain"
       >
-        Connect Wallet (Deploy)
+        Connect Wallet (Deploy First)
       </button>
     )
   }
@@ -47,7 +49,7 @@ export default function WalletConnect() {
       className="rounded-lg bg-[#8f7a66] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#9f8a76]"
       disabled={!connectors[0]}
     >
-      Connect Base Wallet
+      {connectors[0] ? "Connect Base Wallet" : "No Connector Available"}
     </button>
   )
 }
