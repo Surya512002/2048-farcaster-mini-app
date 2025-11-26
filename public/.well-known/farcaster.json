@@ -1,0 +1,17 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg0RTk0NjU3RjI0YTk5NEM1NjYzODY0NUY2NENCQ0E4NjQyRDQ5QTlEIn0",
+    "payload": "eyJkb21haW4iOiJ5b3VyLWRvbWFpbi5jb20ifQ",
+    "signature": "MHhhYmNkZWYxMjM0NTY3ODkw"
+  },
+  "frame": {
+    "version": "next",
+    "name": "2048 Mini App",
+    "iconUrl": "https://your-domain.com/icon.png",
+    "homeUrl": "https://your-domain.com",
+    "imageUrl": "https://your-domain.com/og-image.png",
+    "splashImageUrl": "https://your-domain.com/splash.png",
+    "splashBackgroundColor": "#faf8ef",
+    "webhookUrl": "https://your-domain.com/api/webhook"
+  }
+}

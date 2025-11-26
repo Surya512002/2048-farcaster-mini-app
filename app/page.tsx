@@ -1,9 +1,32 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Game2048 from "@/components/Game2048"
 import WalletConnect from "@/components/WalletConnect"
 
 export default function Home() {
+  const [sdkLoaded, setSdkLoaded] = useState(false)
+
+  useEffect(() => {
+    async function initSDK() {
+      try {
+        // Dynamically import SDK to avoid module-level errors
+        const { default: sdk } = await import("@farcaster/frame-sdk")
+
+        // Call ready() to dismiss splash screen
+        await sdk.actions.ready()
+        console.log("[v0] Farcaster SDK initialized successfully")
+        setSdkLoaded(true)
+      } catch (error) {
+        // Silently handle errors in preview/development
+        console.log("[v0] Running in standalone mode")
+        setSdkLoaded(false)
+      }
+    }
+
+    initSDK()
+  }, [])
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-[#faf8ef] p-4">
       <div className="absolute right-4 top-4">
@@ -15,7 +38,7 @@ export default function Home() {
         <p className="text-sm text-[#776e65]">
           Join the tiles, get to <strong>2048!</strong>
         </p>
-        <p className="mt-2 text-xs text-[#8f7a66]">Deploy to enable Farcaster features</p>
+        {sdkLoaded && <p className="mt-2 text-xs text-green-600">Connected to Farcaster</p>}
       </div>
 
       <Game2048 />

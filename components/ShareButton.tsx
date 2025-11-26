@@ -15,9 +15,14 @@ export default function ShareButton({ score }: ShareButtonProps) {
     try {
       const shareText = `I just scored ${score} points in 2048! 🎮 Can you beat my score?`
 
-      if (typeof navigator !== "undefined" && navigator.clipboard) {
-        await navigator.clipboard.writeText(shareText)
-        alert("✅ Score copied to clipboard!\n\n(Farcaster sharing will work after deployment)")
+      try {
+        const { default: sdk } = await import("@farcaster/frame-sdk")
+        await sdk.actions.openUrl(`https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}`)
+      } catch {
+        if (typeof navigator !== "undefined" && navigator.clipboard) {
+          await navigator.clipboard.writeText(shareText)
+          alert("✅ Score copied to clipboard!\n\n(Farcaster sharing will work after deployment)")
+        }
       }
     } catch (error) {
       console.error("Error sharing:", error)
