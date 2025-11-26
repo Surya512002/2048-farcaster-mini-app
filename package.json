@@ -76,6 +76,6 @@
     "typescript": "^5"
   },
   "optionalDependencies": {
-    "@farcaster/frame-sdk": "^0.0.20"
+    "@farcaster/frame-sdk": "^0.1.12"
   }
 }
