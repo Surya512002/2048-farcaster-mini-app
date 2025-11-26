@@ -46,6 +46,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined' && window.location.hostname.includes('vusercontent.net')) {
+                const originalError = console.error;
+                console.error = function(...args) {
+                  if (args[0] && typeof args[0] === 'string' && args[0].includes('origins don\\'t match')) {
+                    return;
+                  }
+                  originalError.apply(console, args);
+                };
+              }
+            `,
+          }}
+        />
+      </head>
       <body className={`font-sans antialiased`}>
         <WagmiProvider>
           {children}
