@@ -106,6 +106,7 @@ export default function Home() {
       </div>
 
       <div className="mb-6 text-center">
+        <img src="/logo-2048.png" alt="2048 Logo" className="mx-auto mb-4 h-24 w-auto" />
         <h1 className="mb-2 text-5xl font-bold text-[#776e65]">2048</h1>
         <p className="text-sm text-[#776e65]">
           Join the tiles, get to <strong>2048!</strong>

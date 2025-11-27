@@ -69,20 +69,22 @@ export default function Leaderboard() {
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          {leaderboard.map((entry) => (
-            <div
-              key={entry.id}
-              className="flex items-center justify-between rounded-lg bg-[#eee4da] p-3 transition-colors hover:bg-[#ede0c8]"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#8f7a66] text-sm font-bold text-white">
-                  {entry.rank}
+          {leaderboard
+            .sort((a, b) => b.score - a.score)
+            .map((entry, index) => (
+              <div
+                key={entry.id}
+                className="flex items-center justify-between rounded-lg bg-[#eee4da] p-3 transition-colors hover:bg-[#ede0c8]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#8f7a66] text-sm font-bold text-white">
+                    {index + 1}
+                  </div>
+                  <span className="font-medium text-[#776e65]">{entry.name}</span>
                 </div>
-                <span className="font-medium text-[#776e65]">{entry.name}</span>
+                <span className="font-bold text-[#8f7a66]">{entry.score.toLocaleString()}</span>
               </div>
-              <span className="font-bold text-[#8f7a66]">{entry.score.toLocaleString()}</span>
-            </div>
-          ))}
+            ))}
         </div>
       </CardContent>
     </Card>
