@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useAccount, useWriteContract } from "wagmi"
+import { useAccount, useSendTransaction } from "wagmi"
 import { parseEther } from "viem"
 import { Button } from "@/components/ui/button"
 import { PAYMENT_AMOUNT_ETH, RECIPIENT_WALLET } from "@/lib/constants"
@@ -13,24 +13,24 @@ interface PaymentModalProps {
 
 export default function PaymentModal({ onPaymentSuccess, fid }: PaymentModalProps) {
   const { isConnected, address } = useAccount()
-  const { writeContract, isPending, isSuccess } = useWriteContract()
-  const [error, setError] = useState<string>("")
+  const { sendTransaction, isPending, isSuccess, isError, error } = useSendTransaction()
+  const [localError, setLocalError] = useState<string>("")
 
   const handlePayment = async () => {
     if (!isConnected) {
-      setError("Please connect your wallet first")
+      setLocalError("Please connect your wallet first")
       return
     }
 
     try {
-      setError("")
-      writeContract({
+      setLocalError("")
+      sendTransaction({
         account: address,
         to: RECIPIENT_WALLET as `0x${string}`,
         value: parseEther(PAYMENT_AMOUNT_ETH),
       })
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Payment failed")
+      setLocalError(err instanceof Error ? err.message : "Payment failed")
     }
   }
 
@@ -54,7 +54,11 @@ export default function PaymentModal({ onPaymentSuccess, fid }: PaymentModalProp
         <h2 className="mb-2 text-2xl font-bold text-[#776e65]">Game Fee Required</h2>
         <p className="mb-6 text-gray-600">Pay {PAYMENT_AMOUNT_ETH} ETH on Base Network to play</p>
 
-        {error && <div className="mb-4 rounded bg-red-100 p-2 text-sm text-red-700">{error}</div>}
+        {(localError || isError) && (
+          <div className="mb-4 rounded bg-red-100 p-2 text-sm text-red-700">
+            {localError || (error instanceof Error ? error.message : "Payment failed")}
+          </div>
+        )}
 
         <div className="mb-6 rounded bg-[#faf8ef] p-4">
           <p className="text-sm text-gray-700">

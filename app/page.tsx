@@ -37,7 +37,9 @@ const isPreviewEnvironment = () => {
 export default function Home() {
   const [sdkLoaded, setSdkLoaded] = useState(false)
   const [fid, setFid] = useState<number | null>(null)
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [paymentComplete, setPaymentComplete] = useState(false)
+  const [gameStarted, setGameStarted] = useState(false)
   const { isConnected } = useAccount()
   const sdkRef = useRef<FarcasterSDK | null>(null)
 
@@ -96,13 +98,29 @@ export default function Home() {
     }
   }
 
-  const showPaymentModal = fid && isConnected && !paymentComplete
+  const handlePlayClick = () => {
+    if (!fid) {
+      alert("Please sign in with Farcaster first")
+      return
+    }
+    if (!isConnected) {
+      alert("Please connect your wallet first")
+      return
+    }
+    setShowPaymentModal(true)
+  }
+
+  const handlePaymentSuccess = () => {
+    setPaymentComplete(true)
+    setShowPaymentModal(false)
+    setGameStarted(true)
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-[#faf8ef] p-4">
-      {showPaymentModal && <PaymentModal fid={fid} onPaymentSuccess={() => setPaymentComplete(true)} />}
+      {showPaymentModal && <PaymentModal fid={fid} onPaymentSuccess={handlePaymentSuccess} />}
 
-      {!fid || !paymentComplete ? (
+      {!gameStarted ? (
         <>
           <div className="absolute right-4 top-4 flex items-center gap-2">
             <Button
@@ -121,39 +139,47 @@ export default function Home() {
             <p className="text-sm text-[#776e65]">
               Join the tiles, get to <strong>2048!</strong>
             </p>
-            {!fid && <p className="mt-4 text-lg font-semibold text-blue-600">Sign in with Farcaster to play</p>}
+
+            {!fid && <p className="mt-4 text-lg font-semibold text-blue-600">Step 1: Sign in with Farcaster</p>}
             {fid && !isConnected && (
-              <p className="mt-4 text-lg font-semibold text-blue-600">Connect wallet and pay 0.00004 ETH to play</p>
+              <p className="mt-4 text-lg font-semibold text-blue-600">Step 2: Connect your wallet on Base</p>
             )}
-            {fid && isConnected && !paymentComplete && (
-              <p className="mt-4 text-lg font-semibold text-blue-600">Complete payment to start playing</p>
+            {fid && isConnected && (
+              <p className="mt-4 text-lg font-semibold text-blue-600">Step 3: Click Play to pay {0.00004} ETH</p>
             )}
             {sdkLoaded && <p className="mt-2 text-xs text-green-600">✓ Connected to Farcaster</p>}
-            {fid && <p className="mt-1 text-xs text-blue-600">Signed in as FID {fid}</p>}
+            {fid && <p className="mt-1 text-xs text-blue-600">✓ Signed in as FID {fid}</p>}
+            {isConnected && <p className="mt-1 text-xs text-green-600">✓ Wallet connected</p>}
+
+            {fid && isConnected && !gameStarted && (
+              <button
+                onClick={handlePlayClick}
+                className="mt-6 rounded-lg bg-[#8f7a66] px-8 py-3 text-lg font-bold text-white transition-colors hover:bg-[#9f8a76]"
+              >
+                Play Now
+              </button>
+            )}
           </div>
         </>
       ) : (
         <>
           <div className="absolute right-4 top-4 flex items-center gap-2">
             <Button
-              onClick={handleSignIn}
+              onClick={() => setGameStarted(false)}
               variant="outline"
               className="border-[#8f7a66] text-[#8f7a66] hover:bg-[#8f7a66] hover:text-white bg-transparent"
             >
-              {fid ? `FID: ${fid}` : "Sign In"}
+              Exit Game
             </Button>
             <WalletConnect />
           </div>
 
           <div className="mb-6 text-center">
-            <img src="/logo-2048.png" alt="2048 Logo" className="mx-auto mb-4 h-24 w-auto" />
-            <h1 className="mb-2 text-5xl font-bold text-[#776e65]">2048</h1>
-            <p className="text-sm text-[#776e65]">
-              Join the tiles, get to <strong>2048!</strong>
-            </p>
+            <img src="/logo-2048.png" alt="2048 Logo" className="mx-auto mb-2 h-16 w-auto" />
+            <h1 className="text-3xl font-bold text-[#776e65]">2048</h1>
           </div>
 
-          <div className="mt-8 flex flex-col items-center gap-6 lg:flex-row lg:items-start">
+          <div className="mt-4 flex flex-col items-center gap-6 lg:flex-row lg:items-start">
             <Game2048 sdk={sdkRef.current} fid={fid} />
             <Leaderboard />
           </div>
