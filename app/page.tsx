@@ -99,6 +99,7 @@ export default function Home() {
   }
 
   const handlePlayClick = () => {
+    console.log("[v0] Play clicked - FID:", fid, "Connected:", isConnected)
     if (!fid) {
       alert("Please sign in with Farcaster first")
       return
@@ -107,13 +108,16 @@ export default function Home() {
       alert("Please connect your wallet first")
       return
     }
+    console.log("[v0] Opening payment modal...")
     setShowPaymentModal(true)
   }
 
   const handlePaymentSuccess = () => {
+    console.log("[v0] Payment success handler called")
     setPaymentComplete(true)
     setShowPaymentModal(false)
     setGameStarted(true)
+    console.log("[v0] Game state set to started")
   }
 
   return (
