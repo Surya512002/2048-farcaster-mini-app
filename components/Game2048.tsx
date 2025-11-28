@@ -321,44 +321,53 @@ export default function Game2048({ sdk, fid }: { sdk: FarcasterSDK | null; fid: 
   }, [gameOver, score])
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-4 w-full">
       <WalletConnect />
 
       {/* Score Board */}
-      <div className="flex gap-4">
-        <div className="rounded-lg bg-[#bbada0] px-6 py-3 text-center">
-          <div className="text-xs font-bold uppercase text-[#eee4da]">Score</div>
-          <div className="text-2xl font-bold text-white">{score}</div>
+      <div className="flex gap-6 w-full justify-center">
+        <div className="rounded-lg bg-gradient-to-b from-[#bbada0] to-[#a89892] px-8 py-4 text-center shadow-lg border-2 border-[#8f7a66]">
+          <div className="text-sm font-bold uppercase text-[#f9f6f2] tracking-widest">Score</div>
+          <div className="text-4xl font-bold text-white drop-shadow-lg">{score}</div>
         </div>
-        <div className="rounded-lg bg-[#bbada0] px-6 py-3 text-center">
-          <div className="text-xs font-bold uppercase text-[#eee4da]">Best</div>
-          <div className="text-2xl font-bold text-white">{bestScore}</div>
+        <div className="rounded-lg bg-gradient-to-b from-[#bbada0] to-[#a89892] px-8 py-4 text-center shadow-lg border-2 border-[#8f7a66]">
+          <div className="text-sm font-bold uppercase text-[#f9f6f2] tracking-widest">Best</div>
+          <div className="text-4xl font-bold text-white drop-shadow-lg">{bestScore}</div>
         </div>
       </div>
 
       {/* Game Grid */}
-      <div className="relative rounded-lg bg-[#bbada0] p-3" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-        <div className="grid grid-cols-4 gap-3">
+      <div
+        className="relative rounded-xl bg-gradient-to-b from-[#c2b3a9] to-[#bbada0] p-4 shadow-2xl border-4 border-[#8f7a66]"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="grid grid-cols-4 gap-4">
           {Array(16)
             .fill(0)
             .map((_, i) => (
-              <div key={i} className="h-16 w-16 rounded-md bg-[#cdc1b4]/50 sm:h-20 sm:w-20 md:h-24 md:w-24" />
+              <div
+                key={i}
+                className="h-24 w-24 rounded-lg bg-[#cdc1b4]/70 sm:h-28 sm:w-28 md:h-32 md:w-32 shadow-inner"
+              />
             ))}
         </div>
 
         {/* Tiles */}
-        <div className="absolute inset-3">
+        <div className="absolute inset-4">
           {tiles.map((tile) => (
             <div
               key={tile.id}
-              className={`absolute flex h-16 w-16 items-center justify-center rounded-md font-bold transition-all duration-150 sm:h-20 sm:w-20 md:h-24 md:w-24 ${
+              className={`absolute flex h-24 w-24 items-center justify-center rounded-lg font-bold transition-all duration-150 sm:h-28 sm:w-28 md:h-32 md:w-32 shadow-lg ${
                 tile.isNew ? "animate-fade-in" : ""
               } ${tile.isMerged ? "animate-bounce-in" : ""}`}
               style={{
                 backgroundColor: getTileColor(tile.value),
                 color: getTileTextColor(tile.value),
                 transform: `translate(${tile.position.col * 100}%, ${tile.position.row * 100}%)`,
-                fontSize: tile.value >= 1000 ? "1.5rem" : tile.value >= 100 ? "2rem" : "2.5rem",
+                fontSize: tile.value >= 1000 ? "2rem" : tile.value >= 100 ? "2.5rem" : "3rem",
+                fontWeight: "bold",
+                textShadow: "0 2px 4px rgba(0,0,0,0.1)",
               }}
             >
               {tile.value}
@@ -368,12 +377,12 @@ export default function Game2048({ sdk, fid }: { sdk: FarcasterSDK | null; fid: 
 
         {/* Game Over Overlay */}
         {gameOver && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-[#faf8ef]/90">
+          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 backdrop-blur-sm">
             <div className="text-center">
-              <div className="mb-4 text-4xl font-bold text-[#776e65]">Game Over!</div>
+              <div className="mb-4 text-5xl font-bold text-white drop-shadow-lg">Game Over!</div>
               <button
                 onClick={initGame}
-                className="rounded-lg bg-[#8f7a66] px-6 py-3 font-bold text-white transition-colors hover:bg-[#9f8a76]"
+                className="rounded-lg bg-gradient-to-b from-[#f67c5f] to-[#f65e3b] px-8 py-4 font-bold text-white transition-all hover:from-[#f68d6b] hover:to-[#f76b47] shadow-lg text-lg"
               >
                 Try Again
               </button>
@@ -383,12 +392,12 @@ export default function Game2048({ sdk, fid }: { sdk: FarcasterSDK | null; fid: 
 
         {/* Win Overlay */}
         {hasWon && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-[#edc22e]/90">
+          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-[#edc22e]/95 backdrop-blur-sm">
             <div className="text-center">
-              <div className="mb-4 text-4xl font-bold text-white">You Win! 🎉</div>
+              <div className="mb-4 text-5xl font-bold text-white drop-shadow-lg">You Win!</div>
               <button
                 onClick={() => setHasWon(false)}
-                className="rounded-lg bg-[#8f7a66] px-6 py-3 font-bold text-white transition-colors hover:bg-[#9f8a76]"
+                className="rounded-lg bg-gradient-to-b from-[#8f7a66] to-[#6f5a4f] px-8 py-4 font-bold text-white transition-all hover:from-[#9f8a76] hover:to-[#7f6a5f] shadow-lg text-lg"
               >
                 Keep Playing
               </button>
@@ -399,11 +408,11 @@ export default function Game2048({ sdk, fid }: { sdk: FarcasterSDK | null; fid: 
 
       {/* Controls */}
       <div className="text-center">
-        <p className="mb-2 text-sm text-[#776e65]">Use arrow keys or swipe to play</p>
-        <div className="flex gap-2">
+        <p className="mb-3 text-sm text-[#776e65] font-semibold">Use arrow keys or swipe to play</p>
+        <div className="flex gap-3 justify-center">
           <button
             onClick={initGame}
-            className="rounded-lg bg-[#8f7a66] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#9f8a76]"
+            className="rounded-lg bg-gradient-to-b from-[#8f7a66] to-[#6f5a4f] px-6 py-3 text-base font-bold text-white transition-all hover:from-[#9f8a76] hover:to-[#7f6a5f] shadow-lg"
           >
             New Game
           </button>

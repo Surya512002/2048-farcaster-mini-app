@@ -182,7 +182,7 @@ export default function Home() {
             <h1 className="text-3xl font-bold text-[#776e65]">2048</h1>
           </div>
 
-          <div className="mt-4 flex flex-col items-center gap-6 lg:flex-row lg:items-start">
+          <div className="mt-4 flex flex-col items-center gap-8 w-full max-w-2xl">
             <Game2048 sdk={sdkRef.current} fid={fid} />
             <Leaderboard />
           </div>
