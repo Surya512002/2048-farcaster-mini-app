@@ -20,24 +20,32 @@ export default function ShareButton({ score, sdk }: ShareButtonProps) {
     setIsSharing(true)
 
     try {
-      const shareText = `I just scored ${score} points in 2048! 🎮 Can you beat my score? ${window.location.href}`
+      const gameUrl =
+        typeof window !== "undefined" ? window.location.href : "https://2048-farcaster-mini-app.vercel.app"
+      const shareText = `🎮 I just scored ${score} points in 2048 Game! 
+
+Can you beat my score? Challenge me now!
+
+${gameUrl}
+
+#2048Game #FarcasterMiniApp #GameChallenge`
 
       if (sdk) {
         try {
           await sdk.actions.composeCast({ body: shareText })
-          console.log("[v0] Cast composed successfully")
+          console.log("[v0] Cast composed successfully with score")
         } catch (error) {
           console.error("[v0] composeCast failed:", error)
           // Fallback to clipboard
           if (typeof navigator !== "undefined" && navigator.clipboard) {
             await navigator.clipboard.writeText(shareText)
-            alert("✅ Score copied to clipboard!")
+            alert("✅ Score challenge copied to clipboard!")
           }
         }
       } else {
         if (typeof navigator !== "undefined" && navigator.clipboard) {
           await navigator.clipboard.writeText(shareText)
-          alert("✅ Score copied to clipboard!\n\n(Farcaster sharing works after deployment)")
+          alert("✅ Score challenge copied to clipboard!\n\n(Farcaster sharing works after deployment)")
         }
       }
     } catch (error) {
@@ -53,9 +61,9 @@ export default function ShareButton({ score, sdk }: ShareButtonProps) {
       onClick={handleShare}
       disabled={isSharing}
       className="bg-[#edc22e] text-white hover:bg-[#edcc61] disabled:opacity-50"
-      title={sdk ? "Share to Farcaster" : "Copy score (Deploy for Farcaster sharing)"}
+      title={sdk ? "Share score to Farcaster" : "Copy score (Deploy for Farcaster sharing)"}
     >
-      {isSharing ? "Sharing..." : "Share Score"}
+      {isSharing ? "Sharing..." : `Share Score (${score})`}
     </Button>
   )
 }

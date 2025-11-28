@@ -2,22 +2,24 @@
 
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useAccount } from "wagmi"
+import { getWeekStartString } from "@/lib/weekly-leaderboard"
 
 type LeaderboardEntry = {
   id: number
-  name: string
+  wallet_address: string
+  farcaster_username: string
   score: number
-  rank: number
 }
 
 export default function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const { address } = useAccount()
+  const [weekStart, setWeekStart] = useState("")
 
   useEffect(() => {
+    setWeekStart(getWeekStartString())
+
     async function fetchLeaderboard() {
       try {
         const response = await fetch("/api/leaderboard")
@@ -34,18 +36,28 @@ export default function Leaderboard() {
     }
 
     fetchLeaderboard()
+
+    // Refresh every 30 seconds
+    const interval = setInterval(fetchLeaderboard, 30000)
+    return () => clearInterval(interval)
   }, [])
 
   const formatAddress = (addr: string) => {
-    if (!addr) return "Anonymous"
+    if (!addr || addr === "Anonymous") return "Anonymous"
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`
+  }
+
+  const getWeekEndDate = () => {
+    const start = new Date(weekStart)
+    const end = new Date(start.getTime() + 6 * 24 * 60 * 60 * 1000)
+    return end.toLocaleDateString("en-US", { month: "short", day: "numeric" })
   }
 
   if (loading) {
     return (
       <Card className="w-full max-w-2xl">
         <CardHeader>
-          <CardTitle className="text-center text-2xl">Top Players</CardTitle>
+          <CardTitle className="text-center text-2xl">Weekly Top Players</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center py-8">
@@ -72,14 +84,18 @@ export default function Leaderboard() {
   return (
     <Card className="w-full max-w-2xl bg-gradient-to-b from-[#faf8ef] to-[#f5f0e6] border-4 border-[#bbada0] shadow-xl">
       <CardHeader className="bg-gradient-to-r from-[#8f7a66] to-[#9f8a76]">
-        <CardTitle className="text-center text-3xl text-white drop-shadow-lg">🏆 Top Players</CardTitle>
+        <div className="text-center">
+          <CardTitle className="text-3xl text-white drop-shadow-lg mb-1">🏆 Weekly Leaderboard</CardTitle>
+          <p className="text-sm text-[#f9f6f2]">Refreshes every Sunday (UTC+5:30)</p>
+          {weekStart && <p className="text-xs text-[#f0e6d2]">Week starting: {weekStart}</p>}
+        </div>
       </CardHeader>
       <CardContent className="pt-6">
-        <div className="space-y-3">
-          {leaderboard
-            .sort((a, b) => b.score - a.score)
-            .slice(0, 10)
-            .map((entry, index) => (
+        {leaderboard.length === 0 ? (
+          <p className="text-center text-[#776e65] py-8">No scores yet. Play a game to join the leaderboard!</p>
+        ) : (
+          <div className="space-y-3">
+            {leaderboard.map((entry, index) => (
               <div
                 key={entry.id}
                 className={`flex items-center justify-between rounded-lg p-4 transition-all shadow-md border-2 ${
@@ -106,12 +122,18 @@ export default function Leaderboard() {
                   >
                     {index + 1}
                   </div>
-                  <span className="font-bold text-[#776e65] text-base">{formatAddress(entry.name)}</span>
+                  <div className="flex flex-col gap-1">
+                    <span className="font-bold text-[#776e65] text-base">{formatAddress(entry.wallet_address)}</span>
+                    <span className="text-xs text-[#8f7a66] opacity-75">
+                      {entry.farcaster_username || "Farcaster User"}
+                    </span>
+                  </div>
                 </div>
                 <span className="font-bold text-[#8f7a66] text-xl">{entry.score.toLocaleString()}</span>
               </div>
             ))}
-        </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   )

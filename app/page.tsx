@@ -40,6 +40,7 @@ export default function Home() {
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [paymentComplete, setPaymentComplete] = useState(false)
   const [gameStarted, setGameStarted] = useState(false)
+  const [gameSessionId, setGameSessionId] = useState(0)
   const { isConnected } = useAccount()
   const sdkRef = useRef<FarcasterSDK | null>(null)
 
@@ -119,6 +120,13 @@ export default function Home() {
     console.log("[v0] Game state set to started")
   }
 
+  const handleNewGame = () => {
+    console.log("[v0] New game clicked - requiring payment again")
+    setGameStarted(false)
+    setPaymentComplete(false)
+    setGameSessionId((prev) => prev + 1)
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-[#faf8ef] p-4">
       {showPaymentModal && <PaymentModal fid={fid} onPaymentSuccess={handlePaymentSuccess} />}
@@ -183,7 +191,7 @@ export default function Home() {
           </div>
 
           <div className="mt-4 flex flex-col items-center gap-8 w-full max-w-2xl">
-            <Game2048 sdk={sdkRef.current} fid={fid} />
+            <Game2048 sdk={sdkRef.current} fid={fid} onNewGame={handleNewGame} />
             <Leaderboard />
           </div>
         </>

@@ -1,23 +1,55 @@
 import { NextResponse } from "next/server"
+import { createServerClient } from "@supabase/ssr"
+import { cookies } from "next/headers"
+import { getWeekStartString } from "@/lib/weekly-leaderboard"
 
-// Using JSONPlaceholder as a demo API
-// In production, replace with your actual leaderboard API (Supabase, Firebase, etc.)
-const API_BASE_URL = "https://jsonplaceholder.typicode.com"
+async function getSupabaseClient() {
+  const cookieStore = await cookies()
+  return createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll()
+      },
+      setAll(cookiesToSet) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
+        } catch {
+          // Handle errors silently
+        }
+      },
+    },
+  })
+}
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    // Fetch leaderboard data
-    // In a real app, this would fetch from your database
-    const response = await fetch(`${API_BASE_URL}/users?_limit=10`)
-    const users = await response.json()
+    const supabase = await getSupabaseClient()
+    const weekStart = getWeekStartString()
 
-    // Mock leaderboard data
-    const leaderboard = users.map((user: any, index: number) => ({
-      id: user.id,
-      name: user.name,
-      score: Math.floor(Math.random() * 10000) + 1000,
-      rank: index + 1,
-    }))
+    const { data, error } = await supabase
+      .from("weekly_scores")
+      .select("wallet_address, farcaster_username, score, created_at")
+      .eq("week_start", weekStart)
+      .order("score", { ascending: false })
+      .limit(10)
+
+    if (error) throw error
+
+    // Group by wallet address and get highest score
+    const leaderboard = Object.values(
+      (data || []).reduce((acc: any, entry: any) => {
+        const key = entry.wallet_address
+        if (!acc[key] || entry.score > acc[key].score) {
+          acc[key] = {
+            id: Math.random(),
+            wallet_address: entry.wallet_address,
+            farcaster_username: entry.farcaster_username || "Anonymous",
+            score: entry.score,
+          }
+        }
+        return acc
+      }, {}),
+    )
 
     return NextResponse.json(leaderboard)
   } catch (error) {
@@ -28,29 +60,35 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const supabase = await getSupabaseClient()
     const body = await request.json()
-    const { name, score } = body
+    const { wallet_address, farcaster_username, fid, score } = body
 
-    // In a real app, save to database
-    // For demo, we'll just echo back the data
-    const response = await fetch(`${API_BASE_URL}/posts`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
+    if (!wallet_address || score === undefined) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    }
+
+    const weekStart = getWeekStartString()
+
+    const { data, error } = await supabase
+      .from("weekly_scores")
+      .insert({
+        wallet_address,
+        farcaster_username: farcaster_username || null,
+        fid: fid || null,
         score,
-        timestamp: new Date().toISOString(),
-      }),
-    })
+        week_start: weekStart,
+        created_at: new Date().toISOString(),
+      })
+      .select()
 
-    const data = await response.json()
-    console.log("[v0] Score submitted:", data)
+    if (error) throw error
+
+    console.log("[v0] Score submitted to weekly leaderboard:", data)
 
     return NextResponse.json({
       success: true,
-      message: "Score submitted successfully",
+      message: "Score submitted to weekly leaderboard",
       data,
     })
   } catch (error) {

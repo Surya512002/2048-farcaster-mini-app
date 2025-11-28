@@ -21,7 +21,12 @@ type FarcasterSDK = {
 
 const GRID_SIZE = 4
 
-export default function Game2048({ sdk, fid }: { sdk: FarcasterSDK | null; fid: number | null }) {
+export default function Game2048({
+  sdk,
+  fid,
+  address,
+  onNewGame,
+}: { sdk: FarcasterSDK | null; fid: number | null; address: string | null; onNewGame?: () => void }) {
   const [tiles, setTiles] = useState<Tile[]>([])
   const [score, setScore] = useState(0)
   const [bestScore, setBestScore] = useState(0)
@@ -300,14 +305,15 @@ export default function Game2048({ sdk, fid }: { sdk: FarcasterSDK | null; fid: 
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: fid ? `Player ${fid}` : "Anonymous",
-          score: finalScore,
+          wallet_address: address || "Anonymous",
+          farcaster_username: fid ? `User ${fid}` : null,
           fid: fid,
+          score: finalScore,
         }),
       })
 
       if (response.ok) {
-        console.log("[v0] Score submitted successfully")
+        console.log("[v0] Score submitted to weekly leaderboard")
       }
     } catch (error) {
       console.error("[v0] Failed to submit score:", error)
@@ -381,7 +387,7 @@ export default function Game2048({ sdk, fid }: { sdk: FarcasterSDK | null; fid: 
             <div className="text-center">
               <div className="mb-4 text-5xl font-bold text-white drop-shadow-lg">Game Over!</div>
               <button
-                onClick={initGame}
+                onClick={() => onNewGame?.()}
                 className="rounded-lg bg-gradient-to-b from-[#f67c5f] to-[#f65e3b] px-8 py-4 font-bold text-white transition-all hover:from-[#f68d6b] hover:to-[#f76b47] shadow-lg text-lg"
               >
                 Try Again
@@ -411,7 +417,7 @@ export default function Game2048({ sdk, fid }: { sdk: FarcasterSDK | null; fid: 
         <p className="mb-3 text-sm text-[#776e65] font-semibold">Use arrow keys or swipe to play</p>
         <div className="flex gap-3 justify-center">
           <button
-            onClick={initGame}
+            onClick={() => onNewGame?.()}
             className="rounded-lg bg-gradient-to-b from-[#8f7a66] to-[#6f5a4f] px-6 py-3 text-base font-bold text-white transition-all hover:from-[#9f8a76] hover:to-[#7f6a5f] shadow-lg"
           >
             New Game
