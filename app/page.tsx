@@ -199,3 +199,15 @@ export default function Home() {
     </main>
   )
 }
+import Head from 'next/head';
+
+export default function Home() {
+  return (
+    <>
+      <Head>
+        <meta name="base:app_id" content="696282498a6eeb04b568dccb" />
+      </Head>
+      {/* Your page content */}
+    </>
+  );
+}
