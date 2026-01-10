@@ -129,6 +129,8 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-[#faf8ef] p-4">
+      <meta name="base:app_id" content="696282498a6eeb04b568dccb" />
+
       {showPaymentModal && <PaymentModal fid={fid} onPaymentSuccess={handlePaymentSuccess} />}
 
       {!gameStarted ? (
