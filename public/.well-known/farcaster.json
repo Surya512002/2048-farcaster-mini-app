@@ -13,5 +13,6 @@
     "splashImageUrl": "https://2048-farcaster-mini-app.vercel.app/splash.png",
     "splashBackgroundColor": "#faf8ef",
     "webhookUrl": "https://2048-farcaster-mini-app.vercel.app/api/webhook"
-  }
+  },
+  "base:app_id": "696282498a6eeb04b568dccb"
 }
