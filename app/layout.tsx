@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "2048 Game - Join the tiles and reach 2048!",
   description: "Play the addictive 2048 puzzle game. Slide tiles to combine numbers and reach 2048!",
   generator: "v0.app",
+  other: {
+    "base:app_id": "696282498a6eeb04b568dccb",
+  },
   icons: {
     icon: [
       {
