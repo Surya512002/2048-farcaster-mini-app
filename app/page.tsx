@@ -46,6 +46,7 @@ export default function Home() {
   const [isLoadingSignIn, setIsLoadingSignIn] = useState(false)
   const { isConnected } = useAccount()
   const { theme, toggleTheme } = useTheme()
+
   const sdkRef = useRef<FarcasterSDK | null>(null)
 
   useEffect(() => {
