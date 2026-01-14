@@ -5,8 +5,11 @@ import Game2048 from "@/components/Game2048"
 import WalletConnect from "@/components/WalletConnect"
 import PaymentModal from "@/components/PaymentModal"
 import Leaderboard from "@/components/Leaderboard"
+import { Onboarding } from "@/components/Onboarding"
 import { Button } from "@/components/ui/button"
 import { useAccount } from "wagmi"
+import { useTheme } from "@/components/ThemeProvider"
+import { Moon, Sun } from "lucide-react"
 
 type FarcasterSDK = {
   actions: {
@@ -24,7 +27,6 @@ declare global {
 
 const isPreviewEnvironment = () => {
   if (typeof window === "undefined") return true
-
   const hostname = window.location.hostname
   return (
     hostname.includes("vusercontent.net") ||
@@ -41,7 +43,9 @@ export default function Home() {
   const [paymentComplete, setPaymentComplete] = useState(false)
   const [gameStarted, setGameStarted] = useState(false)
   const [gameSessionId, setGameSessionId] = useState(0)
+  const [isLoadingSignIn, setIsLoadingSignIn] = useState(false)
   const { isConnected } = useAccount()
+  const { theme, toggleTheme } = useTheme()
   const sdkRef = useRef<FarcasterSDK | null>(null)
 
   useEffect(() => {
@@ -77,10 +81,11 @@ export default function Home() {
   }, [])
 
   const handleSignIn = async () => {
+    setIsLoadingSignIn(true)
     try {
       if (!sdkRef.current) {
         console.log("[v0] SDK not available - using test FID for preview")
-        setFid(279474) // Test FID for preview
+        setFid(279474)
         return
       }
 
@@ -93,79 +98,97 @@ export default function Home() {
       } else {
         console.log("[v0] No FID from sign-in, using test FID")
         setFid(279474)
-        alert("Signed in successfully (preview mode - using test FID)")
       }
     } catch (error) {
       console.error("[v0] Sign-in failed:", error)
-      setFid(279474) // Fallback to test FID
-      alert("Using test FID for preview mode")
+      setFid(279474)
+    } finally {
+      setIsLoadingSignIn(false)
     }
   }
 
   const handlePlayClick = () => {
-    console.log("[v0] Play clicked - FID:", fid, "Connected:", isConnected)
     if (!isConnected) {
       alert("Please connect your wallet first")
       return
     }
-    console.log("[v0] Opening payment modal...")
     setShowPaymentModal(true)
   }
 
   const handlePaymentSuccess = () => {
-    console.log("[v0] Payment success handler called")
     setPaymentComplete(true)
     setShowPaymentModal(false)
     setGameStarted(true)
-    console.log("[v0] Game state set to started")
   }
 
   const handleNewGame = () => {
-    console.log("[v0] New game clicked - requiring payment again")
     setGameStarted(false)
     setPaymentComplete(false)
     setGameSessionId((prev) => prev + 1)
   }
 
+  const bgClass = theme === "dark" ? "bg-slate-900 text-white" : "bg-[#faf8ef] text-gray-900"
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-[#faf8ef] p-4">
+    <main className={`flex min-h-screen flex-col items-center justify-center ${bgClass} p-4 transition-colors`}>
+      <Onboarding />
       {showPaymentModal && <PaymentModal fid={fid} onPaymentSuccess={handlePaymentSuccess} />}
+
+      {/* Theme Toggle */}
+      <button
+        onClick={toggleTheme}
+        className="fixed left-4 top-4 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-800 transition-colors"
+        aria-label="Toggle theme"
+      >
+        {theme === "light" ? <Moon className="w-6 h-6" /> : <Sun className="w-6 h-6" />}
+      </button>
 
       {!gameStarted ? (
         <>
+          {/* Header Navigation */}
           <div className="absolute right-4 top-4 flex items-center gap-2">
             <Button
               onClick={handleSignIn}
+              disabled={isLoadingSignIn}
               variant="outline"
-              className="border-[#8f7a66] text-[#8f7a66] hover:bg-[#8f7a66] hover:text-white bg-transparent"
+              className="min-h-11 px-6 text-base font-semibold bg-transparent"
             >
-              {fid ? `FID: ${fid}` : "Sign In"}
+              {isLoadingSignIn ? "Signing in..." : fid ? `FID: ${fid}` : "Sign In"}
             </Button>
             <WalletConnect />
           </div>
 
+          {/* Main Content */}
           <div className="mb-6 text-center">
             <img src="/logo-2048.png" alt="2048 Logo" className="mx-auto mb-4 h-24 w-auto" />
-            <h1 className="mb-2 text-5xl font-bold text-[#776e65]">2048</h1>
-            <p className="text-sm text-[#776e65]">
+            <h1 className="mb-2 text-5xl font-bold text-[#776e65] dark:text-[#f9f6f2]">2048</h1>
+            <p className="text-base text-[#776e65] dark:text-[#f9f6f2]">
               Join the tiles, get to <strong>2048!</strong>
             </p>
 
-            {!fid && <p className="mt-4 text-lg font-semibold text-blue-600">Step 1: Sign in with Farcaster</p>}
-            {fid && !isConnected && (
-              <p className="mt-4 text-lg font-semibold text-blue-600">Step 2: Connect your wallet on Base</p>
-            )}
-            {fid && isConnected && (
-              <p className="mt-4 text-lg font-semibold text-blue-600">Step 3: Click Play to pay {0.00004} ETH</p>
-            )}
-            {sdkLoaded && <p className="mt-2 text-xs text-green-600">✓ Connected to Farcaster</p>}
-            {fid && <p className="mt-1 text-xs text-blue-600">✓ Signed in as FID {fid}</p>}
-            {isConnected && <p className="mt-1 text-xs text-green-600">✓ Wallet connected</p>}
+            {/* Onboarding Steps */}
+            <div className="mt-6 space-y-2 text-sm font-semibold">
+              {!fid && <p className="text-blue-600 dark:text-blue-400">Step 1: Sign in with Farcaster</p>}
+              {fid && !isConnected && (
+                <p className="text-blue-600 dark:text-blue-400">Step 2: Connect your wallet on Base</p>
+              )}
+              {fid && isConnected && (
+                <p className="text-blue-600 dark:text-blue-400">Step 3: Click Play to pay 0.00004 ETH</p>
+              )}
+            </div>
 
+            {/* Status Indicators */}
+            <div className="mt-4 space-y-1 text-xs">
+              {sdkLoaded && <p className="text-green-600 dark:text-green-400">✓ Connected to Farcaster</p>}
+              {fid && <p className="text-blue-600 dark:text-blue-400">✓ Signed in as FID {fid}</p>}
+              {isConnected && <p className="text-green-600 dark:text-green-400">✓ Wallet connected on Base</p>}
+            </div>
+
+            {/* Play Button */}
             {isConnected && !gameStarted && (
               <button
                 onClick={handlePlayClick}
-                className="mt-6 rounded-lg bg-[#8f7a66] px-8 py-3 text-lg font-bold text-white transition-colors hover:bg-[#9f8a76]"
+                className="mt-6 min-h-12 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 transition-colors text-lg w-full sm:w-auto"
               >
                 Play Now
               </button>
@@ -174,12 +197,9 @@ export default function Home() {
         </>
       ) : (
         <>
+          {/* In-Game Navigation */}
           <div className="absolute right-4 top-4 flex items-center gap-2">
-            <Button
-              onClick={() => setGameStarted(false)}
-              variant="outline"
-              className="border-[#8f7a66] text-[#8f7a66] hover:bg-[#8f7a66] hover:text-white bg-transparent"
-            >
+            <Button onClick={() => setGameStarted(false)} variant="outline" className="min-h-11 px-6 font-semibold">
               Exit Game
             </Button>
             <WalletConnect />
@@ -187,11 +207,12 @@ export default function Home() {
 
           <div className="mb-6 text-center">
             <img src="/logo-2048.png" alt="2048 Logo" className="mx-auto mb-2 h-16 w-auto" />
-            <h1 className="text-3xl font-bold text-[#776e65]">2048</h1>
+            <h1 className="text-3xl font-bold text-[#776e65] dark:text-[#f9f6f2]">2048</h1>
           </div>
 
+          {/* Game and Leaderboard */}
           <div className="mt-4 flex flex-col items-center gap-8 w-full max-w-2xl">
-            <Game2048 sdk={sdkRef.current} fid={fid} onNewGame={handleNewGame} />
+            <Game2048 key={gameSessionId} sdk={sdkRef.current} fid={fid} onNewGame={handleNewGame} />
             <Leaderboard />
           </div>
         </>

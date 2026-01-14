@@ -4,33 +4,27 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import WagmiProvider from "@/components/providers/WagmiProvider"
+import { ThemeProvider } from "@/components/ThemeProvider"
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "2048 Game - Join the tiles and reach 2048!",
-  description: "Play the addictive 2048 puzzle game. Slide tiles to combine numbers and reach 2048!",
+  title: "2048 Game - Reach 2048 and compete on Base",
+  description:
+    "Play the addictive 2048 puzzle game on Farcaster. Sign in, pay per game, and compete on the weekly leaderboard.",
   generator: "v0.app",
   other: {
     "base:app_id": "696282498a6eeb04b568dccb",
   },
   icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
+  openGraph: {
+    title: "2048 Game - Play on Farcaster",
+    description: "Join the tiles, reach 2048, and compete with other players. Play now on Base network.",
+    type: "website",
   },
 }
 
@@ -48,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -67,10 +61,12 @@ export default function RootLayout({
         />
       </head>
       <body className={`font-sans antialiased`}>
-        <WagmiProvider>
-          {children}
-          <Analytics />
-        </WagmiProvider>
+        <ThemeProvider>
+          <WagmiProvider>
+            {children}
+            <Analytics />
+          </WagmiProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
