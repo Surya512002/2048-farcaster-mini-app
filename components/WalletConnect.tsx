@@ -42,12 +42,12 @@ export default function WalletConnect() {
             {isPending ? "Connecting..." : "Connect Wallet"}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="bg-[#faf8ef] border-[#bbada0]">
+        <DropdownMenuContent className="bg-[#faf8ef] dark:bg-[#2a2a2a] border-[#bbada0] dark:border-[#555]">
           {connectors.map((connector) => (
             <DropdownMenuItem
               key={connector.uid}
               onClick={() => connect({ connector })}
-              className="cursor-pointer hover:bg-[#eee4da] focus:bg-[#eee4da]"
+              className="cursor-pointer hover:bg-[#eee4da] dark:hover:bg-[#444] focus:bg-[#eee4da] dark:focus:bg-[#444] text-gray-900 dark:text-white"
             >
               {getConnectorName(connector.name)}
             </DropdownMenuItem>
