@@ -130,8 +130,8 @@ export default function Home() {
 
   const bgClass =
     theme === "dark"
-      ? "bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white"
-      : "bg-gradient-to-br from-purple-50 via-blue-50 to-purple-50 text-gray-900"
+      ? "bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 text-white"
+      : "bg-gradient-to-br from-indigo-100 via-purple-100 to-slate-100 text-gray-900"
 
   return (
     <main className={`flex min-h-screen flex-col items-center justify-center ${bgClass} p-4 transition-colors`}>
@@ -155,7 +155,7 @@ export default function Home() {
               onClick={handleSignIn}
               disabled={isLoadingSignIn}
               variant="outline"
-              className="min-h-11 px-6 text-base font-semibold bg-purple-600 hover:bg-purple-700 text-white border-purple-700"
+              className="min-h-11 px-6 text-base font-semibold bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-700"
             >
               {isLoadingSignIn ? "Signing in..." : fid ? `FID: ${fid}` : "Sign In"}
             </Button>
@@ -164,22 +164,21 @@ export default function Home() {
 
           {/* Main Content */}
           <div className="mb-6 text-center">
-            <img src="/logo-2048.png" alt="2048 Logo" className="mx-auto mb-4 h-24 w-auto" />
-            <h1 className="mb-2 text-5xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-purple-400 dark:via-blue-400 dark:to-purple-400">
+            <h1 className="mb-2 text-6xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400">
               2048
             </h1>
-            <p className="text-base text-purple-700 dark:text-purple-300">
+            <p className="text-base text-indigo-700 dark:text-indigo-300">
               Join the tiles, get to <strong>2048!</strong>
             </p>
 
             {/* Onboarding Steps */}
             <div className="mt-6 space-y-2 text-sm font-semibold">
-              {!fid && <p className="text-purple-600 dark:text-purple-400">Step 1: Sign in with Farcaster</p>}
+              {!fid && <p className="text-indigo-600 dark:text-indigo-400">Step 1: Sign in with Farcaster</p>}
               {fid && !isConnected && (
-                <p className="text-purple-600 dark:text-purple-400">Step 2: Connect your wallet on Base</p>
+                <p className="text-indigo-600 dark:text-indigo-400">Step 2: Connect your wallet on Base</p>
               )}
               {fid && isConnected && (
-                <p className="text-purple-600 dark:text-purple-400">Step 3: Click Play to pay 0.00004 ETH</p>
+                <p className="text-indigo-600 dark:text-indigo-400">Step 3: Click Play to pay 0.00004 ETH</p>
               )}
             </div>
 
@@ -194,7 +193,7 @@ export default function Home() {
             {isConnected && !gameStarted && (
               <button
                 onClick={handlePlayClick}
-                className="mt-6 min-h-12 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold px-8 py-3 transition-all text-lg w-full sm:w-auto shadow-lg hover:shadow-xl"
+                className="mt-6 min-h-12 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold px-8 py-3 transition-all text-lg w-full sm:w-auto shadow-lg hover:shadow-xl"
               >
                 Play Now
               </button>
@@ -208,7 +207,7 @@ export default function Home() {
             <Button
               onClick={() => setGameStarted(false)}
               variant="outline"
-              className="min-h-11 px-6 font-semibold bg-purple-600 hover:bg-purple-700 text-white border-purple-700"
+              className="min-h-11 px-6 font-semibold bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-700"
             >
               Exit Game
             </Button>
@@ -216,7 +215,7 @@ export default function Home() {
           </div>
 
           <div className="mb-6 text-center">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-purple-400 dark:via-blue-400 dark:to-purple-400">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400">
               2048
             </h1>
           </div>
