@@ -344,9 +344,13 @@ export default function Game2048({
 
       {/* Game Grid */}
       <div
-        className="relative rounded-xl bg-gradient-to-b from-[#c2b3a9] to-[#bbada0] p-4 shadow-2xl border-4 border-[#8f7a66]"
+        className="relative rounded-xl bg-gradient-to-b from-[#c2b3a9] to-[#bbada0] p-4 shadow-2xl border-4 border-[#8f7a66] overflow-hidden"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
+        style={{
+          width: "fit-content",
+          margin: "0 auto",
+        }}
       >
         <div className="grid grid-cols-4 gap-4">
           {Array(16)
@@ -360,25 +364,36 @@ export default function Game2048({
         </div>
 
         {/* Tiles */}
-        <div className="absolute inset-4">
-          {tiles.map((tile) => (
-            <div
-              key={tile.id}
-              className={`absolute flex h-24 w-24 items-center justify-center rounded-lg font-bold transition-all duration-150 sm:h-28 sm:w-28 md:h-32 md:w-32 shadow-lg ${
-                tile.isNew ? "animate-fade-in" : ""
-              } ${tile.isMerged ? "animate-bounce-in" : ""}`}
-              style={{
-                backgroundColor: getTileColor(tile.value),
-                color: getTileTextColor(tile.value),
-                transform: `translate(${tile.position.col * 100}%, ${tile.position.row * 100}%)`,
-                fontSize: tile.value >= 1000 ? "2rem" : tile.value >= 100 ? "2.5rem" : "3rem",
-                fontWeight: "bold",
-                textShadow: "0 2px 4px rgba(0,0,0,0.1)",
-              }}
-            >
-              {tile.value}
-            </div>
-          ))}
+        <div className="absolute inset-4 overflow-hidden">
+          {tiles.map((tile) => {
+            const tileSize = 96 // 24 * 4 for base size
+            const gap = 16 // 4 * 4 for gap
+            const totalPerTile = tileSize + gap
+            const xPos = tile.position.col * totalPerTile
+            const yPos = tile.position.row * totalPerTile
+
+            return (
+              <div
+                key={tile.id}
+                className={`absolute flex h-24 w-24 items-center justify-center rounded-lg font-bold transition-all duration-300 sm:h-28 sm:w-28 md:h-32 md:w-32 shadow-lg ${
+                  tile.isNew ? "animate-fade-in" : ""
+                } ${tile.isMerged ? "animate-bounce-in" : ""}`}
+                style={{
+                  backgroundColor: getTileColor(tile.value),
+                  color: getTileTextColor(tile.value),
+                  left: `${xPos}px`,
+                  top: `${yPos}px`,
+                  fontSize: tile.value >= 1000 ? "1.5rem" : tile.value >= 100 ? "2rem" : "2.5rem",
+                  fontWeight: "bold",
+                  textShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                  lineHeight: "1.2",
+                  wordBreak: "break-word",
+                }}
+              >
+                {tile.value}
+              </div>
+            )
+          })}
         </div>
 
         {/* Game Over Overlay */}
