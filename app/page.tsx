@@ -128,7 +128,10 @@ export default function Home() {
     setGameSessionId((prev) => prev + 1)
   }
 
-  const bgClass = theme === "dark" ? "bg-slate-900 text-white" : "bg-[#faf8ef] text-gray-900"
+  const bgClass =
+    theme === "dark"
+      ? "bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white"
+      : "bg-gradient-to-br from-purple-50 via-blue-50 to-purple-50 text-gray-900"
 
   return (
     <main className={`flex min-h-screen flex-col items-center justify-center ${bgClass} p-4 transition-colors`}>
@@ -138,7 +141,7 @@ export default function Home() {
       {/* Theme Toggle */}
       <button
         onClick={toggleTheme}
-        className="fixed left-4 top-4 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-800 transition-colors"
+        className="fixed left-4 top-4 p-2 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors"
         aria-label="Toggle theme"
       >
         {theme === "light" ? <Moon className="w-6 h-6" /> : <Sun className="w-6 h-6" />}
@@ -152,7 +155,7 @@ export default function Home() {
               onClick={handleSignIn}
               disabled={isLoadingSignIn}
               variant="outline"
-              className="min-h-11 px-6 text-base font-semibold bg-transparent"
+              className="min-h-11 px-6 text-base font-semibold bg-purple-600 hover:bg-purple-700 text-white border-purple-700"
             >
               {isLoadingSignIn ? "Signing in..." : fid ? `FID: ${fid}` : "Sign In"}
             </Button>
@@ -162,34 +165,36 @@ export default function Home() {
           {/* Main Content */}
           <div className="mb-6 text-center">
             <img src="/logo-2048.png" alt="2048 Logo" className="mx-auto mb-4 h-24 w-auto" />
-            <h1 className="mb-2 text-5xl font-bold text-[#776e65] dark:text-[#f9f6f2]">2048</h1>
-            <p className="text-base text-[#776e65] dark:text-[#f9f6f2]">
+            <h1 className="mb-2 text-5xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-purple-400 dark:via-blue-400 dark:to-purple-400">
+              2048
+            </h1>
+            <p className="text-base text-purple-700 dark:text-purple-300">
               Join the tiles, get to <strong>2048!</strong>
             </p>
 
             {/* Onboarding Steps */}
             <div className="mt-6 space-y-2 text-sm font-semibold">
-              {!fid && <p className="text-blue-600 dark:text-blue-400">Step 1: Sign in with Farcaster</p>}
+              {!fid && <p className="text-purple-600 dark:text-purple-400">Step 1: Sign in with Farcaster</p>}
               {fid && !isConnected && (
-                <p className="text-blue-600 dark:text-blue-400">Step 2: Connect your wallet on Base</p>
+                <p className="text-purple-600 dark:text-purple-400">Step 2: Connect your wallet on Base</p>
               )}
               {fid && isConnected && (
-                <p className="text-blue-600 dark:text-blue-400">Step 3: Click Play to pay 0.00004 ETH</p>
+                <p className="text-purple-600 dark:text-purple-400">Step 3: Click Play to pay 0.00004 ETH</p>
               )}
             </div>
 
             {/* Status Indicators */}
             <div className="mt-4 space-y-1 text-xs">
-              {sdkLoaded && <p className="text-green-600 dark:text-green-400">✓ Connected to Farcaster</p>}
-              {fid && <p className="text-blue-600 dark:text-blue-400">✓ Signed in as FID {fid}</p>}
-              {isConnected && <p className="text-green-600 dark:text-green-400">✓ Wallet connected on Base</p>}
+              {sdkLoaded && <p className="text-amber-600 dark:text-amber-400">✓ Connected to Farcaster</p>}
+              {fid && <p className="text-amber-600 dark:text-amber-400">✓ Signed in as FID {fid}</p>}
+              {isConnected && <p className="text-amber-600 dark:text-amber-400">✓ Wallet connected on Base</p>}
             </div>
 
             {/* Play Button */}
             {isConnected && !gameStarted && (
               <button
                 onClick={handlePlayClick}
-                className="mt-6 min-h-12 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 transition-colors text-lg w-full sm:w-auto"
+                className="mt-6 min-h-12 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold px-8 py-3 transition-all text-lg w-full sm:w-auto shadow-lg hover:shadow-xl"
               >
                 Play Now
               </button>
@@ -200,15 +205,20 @@ export default function Home() {
         <>
           {/* In-Game Navigation */}
           <div className="absolute right-4 top-4 flex items-center gap-2">
-            <Button onClick={() => setGameStarted(false)} variant="outline" className="min-h-11 px-6 font-semibold">
+            <Button
+              onClick={() => setGameStarted(false)}
+              variant="outline"
+              className="min-h-11 px-6 font-semibold bg-purple-600 hover:bg-purple-700 text-white border-purple-700"
+            >
               Exit Game
             </Button>
             <WalletConnect />
           </div>
 
           <div className="mb-6 text-center">
-            <img src="/logo-2048.png" alt="2048 Logo" className="mx-auto mb-2 h-16 w-auto" />
-            <h1 className="text-3xl font-bold text-[#776e65] dark:text-[#f9f6f2]">2048</h1>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-purple-400 dark:via-blue-400 dark:to-purple-400">
+              2048
+            </h1>
           </div>
 
           {/* Game and Leaderboard */}
