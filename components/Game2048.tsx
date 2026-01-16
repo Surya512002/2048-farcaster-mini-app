@@ -364,26 +364,32 @@ export default function Game2048({
         </div>
 
         {/* Tiles */}
-        <div className="absolute inset-4 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
           {tiles.map((tile) => {
-            const tileSize = 96 // 24 * 4 for base size
-            const gap = 16 // 4 * 4 for gap
-            const totalPerTile = tileSize + gap
-            const xPos = tile.position.col * totalPerTile
-            const yPos = tile.position.row * totalPerTile
+            const tileSize = {
+              base: 80, // Mobile: smaller tiles
+              sm: 96, // sm breakpoint
+              md: 120, // md breakpoint
+            }
+            const gap = 12 // Consistent gap between tiles
+
+            // Calculate position based on base mobile size for now
+            // The actual responsive sizing is handled by CSS classes
+            const xPos = tile.position.col * (tileSize.base + gap)
+            const yPos = tile.position.row * (tileSize.base + gap)
 
             return (
               <div
                 key={tile.id}
-                className={`absolute flex h-24 w-24 items-center justify-center rounded-lg font-bold transition-all duration-300 sm:h-28 sm:w-28 md:h-32 md:w-32 shadow-lg ${
+                className={`absolute flex items-center justify-center rounded-lg font-bold transition-all duration-300 shadow-lg ${
                   tile.isNew ? "animate-fade-in" : ""
-                } ${tile.isMerged ? "animate-bounce-in" : ""}`}
+                } ${tile.isMerged ? "animate-bounce-in" : ""} h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28`}
                 style={{
                   backgroundColor: getTileColor(tile.value),
                   color: getTileTextColor(tile.value),
                   left: `${xPos}px`,
                   top: `${yPos}px`,
-                  fontSize: tile.value >= 1000 ? "1.5rem" : tile.value >= 100 ? "2rem" : "2.5rem",
+                  fontSize: tile.value >= 1000 ? "1.25rem" : tile.value >= 100 ? "1.5rem" : "2rem",
                   fontWeight: "bold",
                   textShadow: "0 2px 4px rgba(0,0,0,0.1)",
                   lineHeight: "1.2",
