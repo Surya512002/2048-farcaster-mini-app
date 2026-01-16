@@ -12,7 +12,8 @@
     "webUrl": "https://2048-farcaster-mini-app.vercel.app",
     "imageUrl": "https://2048-farcaster-mini-app.vercel.app/og-image.png",
     "splashImageUrl": "https://2048-farcaster-mini-app.vercel.app/splash.png",
-    "splashBackgroundColor": "#faf8ef"
+    "splashBackgroundColor": "#faf8ef",
+    "displayType": "inline"
   },
   "base:app_id": "696282498a6eeb04b568dccb"
 }
