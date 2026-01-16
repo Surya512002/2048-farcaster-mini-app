@@ -241,8 +241,10 @@ export default function Game2048({
 
   // Touch controls
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null)
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (gameOver || isProcessing) return
     setTouchStart({
       x: e.touches[0].clientX,
       y: e.touches[0].clientY,
@@ -250,7 +252,7 @@ export default function Game2048({
   }
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!touchStart) return
+    if (!touchStart || isProcessing) return
 
     const touchEnd = {
       x: e.changedTouches[0].clientX,
@@ -259,6 +261,16 @@ export default function Game2048({
 
     const dx = touchEnd.x - touchStart.x
     const dy = touchEnd.y - touchStart.y
+    const distance = Math.sqrt(dx * dx + dy * dy)
+
+    const MIN_SWIPE_DISTANCE = 50
+    if (distance < MIN_SWIPE_DISTANCE) {
+      setTouchStart(null)
+      return
+    }
+
+    setIsProcessing(true)
+    setTimeout(() => setIsProcessing(false), 150)
 
     if (Math.abs(dx) > Math.abs(dy)) {
       handleMove(dx > 0 ? "right" : "left")
@@ -327,89 +339,66 @@ export default function Game2048({
   }, [gameOver, score])
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full">
+    <div className="flex flex-col items-center gap-4 w-full px-2">
       <WalletConnect />
 
       {/* Score Board */}
-      <div className="flex gap-6 w-full justify-center">
-        <div className="rounded-lg bg-gradient-to-b from-[#bbada0] to-[#a89892] px-8 py-4 text-center shadow-lg border-2 border-[#8f7a66]">
-          <div className="text-sm font-bold uppercase text-[#f9f6f2] tracking-widest">Score</div>
-          <div className="text-4xl font-bold text-white drop-shadow-lg">{score}</div>
+      <div className="flex gap-4 sm:gap-6 w-full justify-center flex-wrap">
+        <div className="rounded-lg bg-gradient-to-b from-[#bbada0] to-[#a89892] px-6 sm:px-8 py-3 sm:py-4 text-center shadow-lg border-2 border-[#8f7a66]">
+          <div className="text-xs sm:text-sm font-bold uppercase text-[#f9f6f2] tracking-widest">Score</div>
+          <div className="text-2xl sm:text-4xl font-bold text-white drop-shadow-lg">{score}</div>
         </div>
-        <div className="rounded-lg bg-gradient-to-b from-[#bbada0] to-[#a89892] px-8 py-4 text-center shadow-lg border-2 border-[#8f7a66]">
-          <div className="text-sm font-bold uppercase text-[#f9f6f2] tracking-widest">Best</div>
-          <div className="text-4xl font-bold text-white drop-shadow-lg">{bestScore}</div>
+        <div className="rounded-lg bg-gradient-to-b from-[#bbada0] to-[#a89892] px-6 sm:px-8 py-3 sm:py-4 text-center shadow-lg border-2 border-[#8f7a66]">
+          <div className="text-xs sm:text-sm font-bold uppercase text-[#f9f6f2] tracking-widest">Best</div>
+          <div className="text-2xl sm:text-4xl font-bold text-white drop-shadow-lg">{bestScore}</div>
         </div>
       </div>
 
       {/* Game Grid */}
       <div
-        className="relative rounded-xl bg-gradient-to-b from-[#c2b3a9] to-[#bbada0] p-4 shadow-2xl border-4 border-[#8f7a66] overflow-hidden"
+        className="w-full max-w-xs sm:max-w-sm md:max-w-md rounded-xl bg-gradient-to-b from-[#c2b3a9] to-[#bbada0] p-2 sm:p-3 md:p-4 shadow-2xl border-4 border-[#8f7a66] overflow-hidden"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        style={{
-          width: "fit-content",
-          margin: "0 auto",
-        }}
       >
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 aspect-square">
+          {/* Background tiles */}
           {Array(16)
             .fill(0)
             .map((_, i) => (
-              <div
-                key={i}
-                className="h-24 w-24 rounded-lg bg-[#cdc1b4]/70 sm:h-28 sm:w-28 md:h-32 md:w-32 shadow-inner"
-              />
+              <div key={`bg-${i}`} className="rounded-md sm:rounded-lg bg-[#cdc1b4]/70 shadow-inner" />
             ))}
-        </div>
 
-        {/* Tiles */}
-        <div className="absolute inset-0 overflow-hidden">
-          {tiles.map((tile) => {
-            const tileSize = {
-              base: 80, // Mobile: smaller tiles
-              sm: 96, // sm breakpoint
-              md: 120, // md breakpoint
-            }
-            const gap = 12 // Consistent gap between tiles
-
-            // Calculate position based on base mobile size for now
-            // The actual responsive sizing is handled by CSS classes
-            const xPos = tile.position.col * (tileSize.base + gap)
-            const yPos = tile.position.row * (tileSize.base + gap)
-
-            return (
-              <div
-                key={tile.id}
-                className={`absolute flex items-center justify-center rounded-lg font-bold transition-all duration-300 shadow-lg ${
-                  tile.isNew ? "animate-fade-in" : ""
-                } ${tile.isMerged ? "animate-bounce-in" : ""} h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28`}
-                style={{
-                  backgroundColor: getTileColor(tile.value),
-                  color: getTileTextColor(tile.value),
-                  left: `${xPos}px`,
-                  top: `${yPos}px`,
-                  fontSize: tile.value >= 1000 ? "1.25rem" : tile.value >= 100 ? "1.5rem" : "2rem",
-                  fontWeight: "bold",
-                  textShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                  lineHeight: "1.2",
-                  wordBreak: "break-word",
-                }}
-              >
-                {tile.value}
-              </div>
-            )
-          })}
+          {tiles.map((tile) => (
+            <div
+              key={tile.id}
+              className={`rounded-md sm:rounded-lg font-bold flex items-center justify-center transition-all duration-200 shadow-lg text-center
+                ${tile.isNew ? "animate-fade-in" : ""} 
+                ${tile.isMerged ? "animate-bounce-in" : ""}
+              `}
+              style={{
+                backgroundColor: getTileColor(tile.value),
+                color: getTileTextColor(tile.value),
+                gridColumn: tile.position.col + 1,
+                gridRow: tile.position.row + 1,
+                fontSize: tile.value >= 1000 ? "0.75rem" : tile.value >= 100 ? "1rem" : "1.25rem",
+                fontWeight: "bold",
+                textShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                lineHeight: "1.2",
+              }}
+            >
+              {tile.value}
+            </div>
+          ))}
         </div>
 
         {/* Game Over Overlay */}
         {gameOver && (
           <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 backdrop-blur-sm">
             <div className="text-center">
-              <div className="mb-4 text-5xl font-bold text-white drop-shadow-lg">Game Over!</div>
+              <div className="mb-4 text-3xl sm:text-5xl font-bold text-white drop-shadow-lg">Game Over!</div>
               <button
                 onClick={() => onNewGame?.()}
-                className="rounded-lg bg-gradient-to-b from-[#f67c5f] to-[#f65e3b] px-8 py-4 font-bold text-white transition-all hover:from-[#f68d6b] hover:to-[#f76b47] shadow-lg text-lg"
+                className="rounded-lg bg-gradient-to-b from-[#f67c5f] to-[#f65e3b] px-6 sm:px-8 py-3 sm:py-4 font-bold text-white transition-all hover:from-[#f68d6b] hover:to-[#f76b47] shadow-lg text-base sm:text-lg"
               >
                 Try Again
               </button>
@@ -421,10 +410,10 @@ export default function Game2048({
         {hasWon && (
           <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-[#edc22e]/95 backdrop-blur-sm">
             <div className="text-center">
-              <div className="mb-4 text-5xl font-bold text-white drop-shadow-lg">You Win!</div>
+              <div className="mb-4 text-3xl sm:text-5xl font-bold text-white drop-shadow-lg">You Win!</div>
               <button
                 onClick={() => setHasWon(false)}
-                className="rounded-lg bg-gradient-to-b from-[#8f7a66] to-[#6f5a4f] px-8 py-4 font-bold text-white transition-all hover:from-[#9f8a76] hover:to-[#7f6a5f] shadow-lg text-lg"
+                className="rounded-lg bg-gradient-to-b from-[#8f7a66] to-[#6f5a4f] px-6 sm:px-8 py-3 sm:py-4 font-bold text-white transition-all hover:from-[#9f8a76] hover:to-[#7f6a5f] shadow-lg text-base sm:text-lg"
               >
                 Keep Playing
               </button>
@@ -434,12 +423,12 @@ export default function Game2048({
       </div>
 
       {/* Controls */}
-      <div className="text-center">
-        <p className="mb-3 text-sm text-[#776e65] font-semibold">Use arrow keys or swipe to play</p>
-        <div className="flex gap-3 justify-center">
+      <div className="text-center w-full px-2">
+        <p className="mb-3 text-xs sm:text-sm text-[#776e65] font-semibold">Use arrow keys or swipe to play</p>
+        <div className="flex gap-2 sm:gap-3 justify-center flex-wrap">
           <button
             onClick={() => onNewGame?.()}
-            className="rounded-lg bg-gradient-to-b from-[#8f7a66] to-[#6f5a4f] px-6 py-3 text-base font-bold text-white transition-all hover:from-[#9f8a76] hover:to-[#7f6a5f] shadow-lg"
+            className="rounded-lg bg-gradient-to-b from-[#8f7a66] to-[#6f5a4f] px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-bold text-white transition-all hover:from-[#9f8a76] hover:to-[#7f6a5f] shadow-lg"
           >
             New Game
           </button>
