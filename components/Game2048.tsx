@@ -287,23 +287,23 @@ export default function Game2048({
 
   const getTileColor = (value: number) => {
     const colors: Record<number, string> = {
-      2: "#eee4da",
-      4: "#ede0c8",
-      8: "#f2b179",
-      16: "#f59563",
-      32: "#f67c5f",
-      64: "#f65e3b",
-      128: "#edcf72",
-      256: "#edcc61",
-      512: "#edc850",
-      1024: "#edc53f",
-      2048: "#edc22e",
+      2: "#4dd9ff",
+      4: "#4dd9ff",
+      8: "#00d4ff",
+      16: "#00d4ff",
+      32: "#ff00ff",
+      64: "#ff00ff",
+      128: "#ff00ff",
+      256: "#ff00ff",
+      512: "#00ffff",
+      1024: "#00ffff",
+      2048: "#ffff00",
     }
-    return colors[value] || "#3c3a32"
+    return colors[value] || "#6600ff"
   }
 
   const getTileTextColor = (value: number) => {
-    return value <= 4 ? "#776e65" : "#f9f6f2"
+    return "#ffffff"
   }
 
   // API integration for score submission
@@ -339,39 +339,53 @@ export default function Game2048({
   }, [gameOver, score])
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full px-2">
+    <div className="flex flex-col items-center gap-6 w-full px-2">
       <WalletConnect />
 
-      {/* Score Board */}
+      {/* Score Board - Neon Style */}
       <div className="flex gap-4 sm:gap-6 w-full justify-center flex-wrap">
-        <div className="rounded-lg bg-gradient-to-b from-[#bbada0] to-[#a89892] px-6 sm:px-8 py-3 sm:py-4 text-center shadow-lg border-2 border-[#8f7a66]">
-          <div className="text-xs sm:text-sm font-bold uppercase text-[#f9f6f2] tracking-widest">Score</div>
-          <div className="text-2xl sm:text-4xl font-bold text-white drop-shadow-lg">{score}</div>
+        <div className="rounded-lg bg-[#1a0033]/80 backdrop-blur px-6 sm:px-8 py-3 sm:py-4 text-center shadow-lg border-2 border-[#ff00ff] glow-neon-purple">
+          <div className="text-xs sm:text-sm font-bold uppercase text-[#ff00ff] tracking-widest drop-shadow-lg">
+            Score
+          </div>
+          <div className="text-2xl sm:text-4xl font-bold text-[#00ffff] drop-shadow-lg">{score}</div>
         </div>
-        <div className="rounded-lg bg-gradient-to-b from-[#bbada0] to-[#a89892] px-6 sm:px-8 py-3 sm:py-4 text-center shadow-lg border-2 border-[#8f7a66]">
-          <div className="text-xs sm:text-sm font-bold uppercase text-[#f9f6f2] tracking-widest">Best</div>
-          <div className="text-2xl sm:text-4xl font-bold text-white drop-shadow-lg">{bestScore}</div>
+        <div className="rounded-lg bg-[#1a0033]/80 backdrop-blur px-6 sm:px-8 py-3 sm:py-4 text-center shadow-lg border-2 border-[#00ffff] glow-neon-cyan">
+          <div className="text-xs sm:text-sm font-bold uppercase text-[#00ffff] tracking-widest drop-shadow-lg">
+            Best
+          </div>
+          <div className="text-2xl sm:text-4xl font-bold text-[#00ffff] drop-shadow-lg">{bestScore}</div>
         </div>
       </div>
 
-      {/* Game Grid */}
+      {/* Game Grid - Hexagonal Layout */}
       <div
-        className="w-full max-w-xs sm:max-w-sm md:max-w-md rounded-xl bg-gradient-to-b from-[#c2b3a9] to-[#bbada0] p-2 sm:p-3 md:p-4 shadow-2xl border-4 border-[#8f7a66] overflow-hidden"
+        className="w-full max-w-xs sm:max-w-sm md:max-w-md rounded-2xl bg-[#0a0e27]/90 backdrop-blur p-3 sm:p-4 md:p-6 shadow-2xl border-2 border-[#4dd9ff] overflow-hidden glow-neon-cyan"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 aspect-square">
-          {/* Background tiles */}
+        <div
+          className="grid gap-2 sm:gap-3 md:gap-4 aspect-square"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateRows: "repeat(4, 1fr)",
+          }}
+        >
+          {/* Background hex tiles */}
           {Array(16)
             .fill(0)
             .map((_, i) => (
-              <div key={`bg-${i}`} className="rounded-md sm:rounded-lg bg-[#cdc1b4]/70 shadow-inner" />
+              <div
+                key={`bg-${i}`}
+                className="hexagon-tile bg-[#1a0a2e]/60 border-2 border-[#4dd9ff]/30 rounded-full flex items-center justify-center"
+              />
             ))}
 
           {tiles.map((tile) => (
             <div
               key={tile.id}
-              className={`rounded-md sm:rounded-lg font-bold flex items-center justify-center transition-all duration-200 shadow-lg text-center
+              className={`hexagon-tile font-bold flex items-center justify-center transition-all duration-200 shadow-lg text-center glow-neon
                 ${tile.isNew ? "animate-fade-in" : ""} 
                 ${tile.isMerged ? "animate-bounce-in" : ""}
               `}
@@ -382,8 +396,11 @@ export default function Game2048({
                 gridRow: tile.position.row + 1,
                 fontSize: tile.value >= 1000 ? "0.75rem" : tile.value >= 100 ? "1rem" : "1.25rem",
                 fontWeight: "bold",
-                textShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                textShadow: `0 0 10px ${getTileColor(tile.value)}, 0 2px 4px rgba(0,0,0,0.5)`,
                 lineHeight: "1.2",
+                border: `2px solid ${getTileColor(tile.value)}`,
+                borderRadius: "50%",
+                boxShadow: `0 0 20px ${getTileColor(tile.value)}, inset 0 0 10px ${getTileColor(tile.value)}`,
               }}
             >
               {tile.value}
@@ -393,12 +410,14 @@ export default function Game2048({
 
         {/* Game Over Overlay */}
         {gameOver && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 backdrop-blur-sm">
+          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/80 backdrop-blur-sm border-2 border-[#ff00ff]">
             <div className="text-center">
-              <div className="mb-4 text-3xl sm:text-5xl font-bold text-white drop-shadow-lg">Game Over!</div>
+              <div className="mb-4 text-3xl sm:text-5xl font-bold text-[#ff00ff] drop-shadow-lg glow-text">
+                Game Over!
+              </div>
               <button
                 onClick={() => onNewGame?.()}
-                className="rounded-lg bg-gradient-to-b from-[#f67c5f] to-[#f65e3b] px-6 sm:px-8 py-3 sm:py-4 font-bold text-white transition-all hover:from-[#f68d6b] hover:to-[#f76b47] shadow-lg text-base sm:text-lg"
+                className="rounded-lg bg-[#ff00ff]/80 hover:bg-[#ff00ff] px-6 sm:px-8 py-3 sm:py-4 font-bold text-white transition-all shadow-lg text-base sm:text-lg glow-neon-purple border-2 border-[#ff00ff]"
               >
                 Try Again
               </button>
@@ -408,12 +427,14 @@ export default function Game2048({
 
         {/* Win Overlay */}
         {hasWon && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-[#edc22e]/95 backdrop-blur-sm">
+          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-[#ffff00]/20 backdrop-blur-sm border-2 border-[#ffff00]">
             <div className="text-center">
-              <div className="mb-4 text-3xl sm:text-5xl font-bold text-white drop-shadow-lg">You Win!</div>
+              <div className="mb-4 text-3xl sm:text-5xl font-bold text-[#ffff00] drop-shadow-lg glow-text">
+                You Win!
+              </div>
               <button
                 onClick={() => setHasWon(false)}
-                className="rounded-lg bg-gradient-to-b from-[#8f7a66] to-[#6f5a4f] px-6 sm:px-8 py-3 sm:py-4 font-bold text-white transition-all hover:from-[#9f8a76] hover:to-[#7f6a5f] shadow-lg text-base sm:text-lg"
+                className="rounded-lg bg-[#ffff00]/80 hover:bg-[#ffff00] px-6 sm:px-8 py-3 sm:py-4 font-bold text-black transition-all shadow-lg text-base sm:text-lg glow-neon-yellow border-2 border-[#ffff00]"
               >
                 Keep Playing
               </button>
@@ -424,11 +445,11 @@ export default function Game2048({
 
       {/* Controls */}
       <div className="text-center w-full px-2">
-        <p className="mb-3 text-xs sm:text-sm text-[#776e65] font-semibold">Use arrow keys or swipe to play</p>
+        <p className="mb-3 text-xs sm:text-sm text-[#4dd9ff] font-semibold">Use arrow keys or swipe to play</p>
         <div className="flex gap-2 sm:gap-3 justify-center flex-wrap">
           <button
             onClick={() => onNewGame?.()}
-            className="rounded-lg bg-gradient-to-b from-[#8f7a66] to-[#6f5a4f] px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-bold text-white transition-all hover:from-[#9f8a76] hover:to-[#7f6a5f] shadow-lg"
+            className="rounded-lg bg-[#4d00ff]/80 hover:bg-[#6600ff] px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-bold text-white transition-all shadow-lg glow-neon-purple border-2 border-[#4d00ff]"
           >
             New Game
           </button>

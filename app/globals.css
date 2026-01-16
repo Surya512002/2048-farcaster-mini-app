@@ -124,7 +124,7 @@
   }
 }
 
-/* Add smooth animations for game tiles */
+/* Added neon glow effects and hexagonal tile styles for cyberpunk theme */
 @layer components {
   @keyframes fade-in {
     from {
@@ -154,5 +154,36 @@
 
   .animate-bounce-in {
     animation: bounce-in 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Hexagonal tile styling */
+  .hexagon-tile {
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+
+  /* Neon glow effects */
+  .glow-neon {
+    text-shadow: 0 0 10px currentColor;
+    box-shadow: 0 0 20px currentColor, inset 0 0 10px currentColor;
+  }
+
+  .glow-neon-cyan {
+    box-shadow: 0 0 20px #4dd9ff, 0 0 40px #00d4ff, inset 0 0 10px #00d4ff;
+    border-color: #4dd9ff;
+  }
+
+  .glow-neon-purple {
+    box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff, inset 0 0 10px #ff00ff;
+    border-color: #ff00ff;
+  }
+
+  .glow-neon-yellow {
+    box-shadow: 0 0 20px #ffff00, 0 0 40px #ffff00, inset 0 0 10px #ffff00;
+    border-color: #ffff00;
+  }
+
+  .glow-text {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
   }
 }
