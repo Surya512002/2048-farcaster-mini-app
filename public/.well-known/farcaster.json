@@ -5,7 +5,7 @@
     "signature": "8dHgEpcAZI8IS89Y+FQlaNakF0J8LSkHel9qUAEA/qJ2VxFFRDwuIp0MVGnYNp1+zeEfOkOFjrM54szBcJgGnhw="
   },
   "frame": {
-    "version": "next",
+    "version": "1",
     "name": "2048 Mini App",
     "iconUrl": "https://2048-farcaster-mini-app.vercel.app/icon.png",
     "homeUrl": "https://2048-farcaster-mini-app.vercel.app",
@@ -13,7 +13,9 @@
     "imageUrl": "https://2048-farcaster-mini-app.vercel.app/og-image.png",
     "splashImageUrl": "https://2048-farcaster-mini-app.vercel.app/splash.png",
     "splashBackgroundColor": "#faf8ef",
-    "displayType": "inline"
+    "displayType": "inline",
+    "primaryCategory": "games",
+    "tags": ["puzzle", "2048game", "basechain", "neon", "multiplayer"]
   },
   "base:app_id": "696282498a6eeb04b568dccb"
 }
