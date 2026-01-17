@@ -180,14 +180,14 @@ export default function Home() {
       {!gameStarted ? (
         <>
           {/* Header Navigation */}
-          <div className="absolute right-4 top-4 flex items-center gap-2 z-10">
+          <div className="absolute right-4 top-4 flex flex-col sm:flex-row items-end sm:items-center gap-2 z-10">
             <Button
               onClick={handleSignIn}
               disabled={isLoadingSignIn}
               variant="outline"
-              className="min-h-11 px-6 text-base font-semibold bg-[#4d00ff]/80 hover:bg-[#6600ff] text-white border-[#4dd9ff]"
+              className="min-h-10 px-4 sm:px-6 text-sm sm:text-base font-semibold bg-[#4d00ff]/80 hover:bg-[#6600ff] text-white border-[#4dd9ff] whitespace-nowrap"
             >
-              {isLoadingSignIn ? "Signing in..." : fid ? `FID: ${fid}` : "Sign In"}
+              {isLoadingSignIn ? "Signing..." : fid ? `FID: ${fid}` : "Sign In"}
             </Button>
             <WalletConnect />
           </div>
@@ -229,11 +229,11 @@ export default function Home() {
       ) : (
         <>
           {/* In-Game Navigation */}
-          <div className="absolute right-4 top-4 flex items-center gap-2 z-10">
+          <div className="absolute right-4 top-4 flex flex-col sm:flex-row items-end sm:items-center gap-2 z-10 max-w-[calc(100vw-2rem)]">
             <Button
               onClick={() => setGameStarted(false)}
               variant="outline"
-              className="min-h-11 px-6 font-semibold bg-[#4d00ff]/80 hover:bg-[#6600ff] text-white border-[#4dd9ff]"
+              className="min-h-10 px-4 sm:px-6 font-semibold bg-[#4d00ff]/80 hover:bg-[#6600ff] text-white border-[#4dd9ff] text-sm sm:text-base whitespace-nowrap"
             >
               Exit Game
             </Button>
