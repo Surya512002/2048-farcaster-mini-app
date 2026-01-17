@@ -15,7 +15,20 @@
     "splashBackgroundColor": "#faf8ef",
     "displayType": "inline",
     "primaryCategory": "games",
-    "tags": ["puzzle", "2048game", "basechain", "neon", "multiplayer"]
+    "tags": ["puzzle", "2048game", "basechain", "neon", "multiplayer"],
+    "subtitle": "Play the ultimate 2048 puzzle game on Base network",
+    "description": "Challenge yourself with this cyberpunk-themed 2048 puzzle game. Merge tiles, reach 2048, and compete on the weekly leaderboard. Pay 0.00001 ETH per game on Base network.",
+    "tagline": "Merge tiles, reach 2048, compete for glory",
+    "screenshotUrls": [
+      "https://2048-farcaster-mini-app.vercel.app/screenshot1.png",
+      "https://2048-farcaster-mini-app.vercel.app/screenshot2.png"
+    ],
+    "heroImageUrl": "https://2048-farcaster-mini-app.vercel.app/og-image.png",
+    "ogTitle": "2048 Mini App - Base Network Gaming",
+    "ogDescription": "Play 2048 on Base network. Merge tiles, compete weekly. Pay 0.00001 ETH.",
+    "ogImageUrl": "https://2048-farcaster-mini-app.vercel.app/og-image.png",
+    "webhookUrl": "https://2048-farcaster-mini-app.vercel.app/api/webhook",
+    "noindex": false
   },
   "base:app_id": "696282498a6eeb04b568dccb"
 }
