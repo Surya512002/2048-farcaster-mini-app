@@ -373,16 +373,7 @@ export default function Game2048({
             maxHeight: "100%",
           }}
         >
-          {/* Background hex tiles - ONLY 16 tiles for 4x4 grid */}
-          {Array(16)
-            .fill(0)
-            .map((_, i) => (
-              <div
-                key={`bg-${i}`}
-                className="hexagon-tile bg-[#1a0a2e]/60 border-2 border-[#4dd9ff]/30 rounded-full flex items-center justify-center flex-shrink-0"
-              />
-            ))}
-
+          {/* Only render tiles that exist in the game - no extra background tiles */}
           {tiles.map((tile) => (
             <div
               key={tile.id}
