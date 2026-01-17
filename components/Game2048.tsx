@@ -365,20 +365,21 @@ export default function Game2048({
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className="grid gap-2 sm:gap-3 md:gap-4 aspect-square"
+          className="grid gap-2 sm:gap-3 md:gap-4 w-full aspect-square"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)",
             gridTemplateRows: "repeat(4, 1fr)",
+            maxHeight: "100%",
           }}
         >
-          {/* Background hex tiles */}
+          {/* Background hex tiles - ONLY 16 tiles for 4x4 grid */}
           {Array(16)
             .fill(0)
             .map((_, i) => (
               <div
                 key={`bg-${i}`}
-                className="hexagon-tile bg-[#1a0a2e]/60 border-2 border-[#4dd9ff]/30 rounded-full flex items-center justify-center"
+                className="hexagon-tile bg-[#1a0a2e]/60 border-2 border-[#4dd9ff]/30 rounded-full flex items-center justify-center flex-shrink-0"
               />
             ))}
 
