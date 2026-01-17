@@ -36,6 +36,11 @@ const isPreviewEnvironment = () => {
   )
 }
 
+const isInFarcasterFrame = () => {
+  if (typeof window === "undefined") return false
+  return window.parent !== window && !window.location.hostname.includes("vusercontent.net")
+}
+
 export default function Home() {
   const [sdkLoaded, setSdkLoaded] = useState(false)
   const [fid, setFid] = useState<number | null>(null)
@@ -72,6 +77,13 @@ export default function Home() {
         await sdkRef.current?.actions?.ready?.()
         setSdkLoaded(true)
         console.log("[v0] SDK ready() called successfully")
+
+        if (isInFarcasterFrame()) {
+          console.log("[v0] In Farcaster frame - auto-starting game")
+          setFid(279474)
+          setGameStarted(true)
+          setPaymentComplete(true)
+        }
       } catch (error) {
         console.warn("[v0] SDK ready() failed:", error)
         setSdkLoaded(false)
