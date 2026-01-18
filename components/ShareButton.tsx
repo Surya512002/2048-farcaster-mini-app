@@ -28,7 +28,7 @@ export default function ShareButton({ score, sdk }: ShareButtonProps) {
       const gameUrl = "https://2048-farcaster-mini-app.vercel.app"
       
       // Create a compelling share message with the score and link
-      const shareText = `I just scored ${score} points in 2048! 
+      const shareText = `🎮 I just scored ${score} points in 2048! 
 
 Can you beat my score? Play and challenge me now!
 
@@ -37,31 +37,53 @@ ${gameUrl}
 #2048Game #FarcasterMiniApp #BaseChain`
 
       console.log("[v0] Share message:", shareText)
+      console.log("[v0] SDK available:", !!sdk)
 
       if (sdk && sdk.actions && sdk.actions.composeCast) {
         try {
           await sdk.actions.composeCast({ body: shareText })
           console.log("[v0] Cast composed successfully with score and link")
+          alert(`✅ Score posted to Farcaster!\n\nScore: ${score}`)
         } catch (sdkError) {
           console.error("[v0] SDK composeCast error:", sdkError)
           // Fallback to clipboard
-          if (navigator?.clipboard) {
-            await navigator.clipboard.writeText(shareText)
-            alert(`✅ Score shared!\n\nYour Score: ${score}\nGame Link: ${gameUrl}`)
-          }
+          await fallbackToClipboard(shareText, gameUrl)
         }
       } else {
         console.log("[v0] SDK not available, using clipboard fallback")
-        if (navigator?.clipboard) {
-          await navigator.clipboard.writeText(shareText)
-          alert(`✅ Score copied!\n\nScore: ${score}\nLink: ${gameUrl}\n\nShare it on Farcaster!`)
-        }
+        await fallbackToClipboard(shareText, gameUrl)
       }
     } catch (error) {
       console.error("[v0] Error in share handler:", error)
-      alert("Unable to share. Please try again.")
+      alert("❌ Unable to share. Please try again.")
     } finally {
       setIsSharing(false)
+    }
+  }
+
+  const fallbackToClipboard = async (shareText: string, gameUrl: string) => {
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareText)
+        alert(`✅ Score challenge copied to clipboard!\n\nScore: ${score}\nGame: ${gameUrl}\n\nPaste and share on Farcaster!`)
+      } else {
+        // Fallback for browsers without clipboard API
+        const textArea = document.createElement("textarea")
+        textArea.value = shareText
+        document.body.appendChild(textArea)
+        textArea.select()
+        try {
+          document.execCommand("copy")
+          alert(`✅ Score copied!\n\nScore: ${score}\nShare on Farcaster: ${gameUrl}`)
+        } catch (err) {
+          console.error("[v0] Copy failed:", err)
+          alert(`Share your score: ${score}\n\nLink: ${gameUrl}`)
+        }
+        document.body.removeChild(textArea)
+      }
+    } catch (error) {
+      console.error("[v0] Clipboard fallback error:", error)
+      alert(`Share your score: ${score}\n\nLink: ${gameUrl}`)
     }
   }
 
