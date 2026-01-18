@@ -17,39 +17,48 @@ export default function ShareButton({ score, sdk }: ShareButtonProps) {
   const [isSharing, setIsSharing] = useState(false)
 
   const handleShare = async () => {
+    if (score === 0) {
+      alert("Play a game and get a score before sharing!")
+      return
+    }
+
     setIsSharing(true)
 
     try {
-      const gameUrl =
-        typeof window !== "undefined" ? window.location.href : "https://2048-farcaster-mini-app.vercel.app"
-      const shareText = `🎮 I just scored ${score} points in 2048 Game! 
+      const gameUrl = "https://2048-farcaster-mini-app.vercel.app"
+      
+      // Create a compelling share message with the score and link
+      const shareText = `I just scored ${score} points in 2048! 
 
-Can you beat my score? Challenge me now!
+Can you beat my score? Play and challenge me now!
 
 ${gameUrl}
 
-#2048Game #FarcasterMiniApp #GameChallenge`
+#2048Game #FarcasterMiniApp #BaseChain`
 
-      if (sdk) {
+      console.log("[v0] Share message:", shareText)
+
+      if (sdk && sdk.actions && sdk.actions.composeCast) {
         try {
           await sdk.actions.composeCast({ body: shareText })
-          console.log("[v0] Cast composed successfully with score")
-        } catch (error) {
-          console.error("[v0] composeCast failed:", error)
+          console.log("[v0] Cast composed successfully with score and link")
+        } catch (sdkError) {
+          console.error("[v0] SDK composeCast error:", sdkError)
           // Fallback to clipboard
-          if (typeof navigator !== "undefined" && navigator.clipboard) {
+          if (navigator?.clipboard) {
             await navigator.clipboard.writeText(shareText)
-            alert("✅ Score challenge copied to clipboard!")
+            alert(`✅ Score shared!\n\nYour Score: ${score}\nGame Link: ${gameUrl}`)
           }
         }
       } else {
-        if (typeof navigator !== "undefined" && navigator.clipboard) {
+        console.log("[v0] SDK not available, using clipboard fallback")
+        if (navigator?.clipboard) {
           await navigator.clipboard.writeText(shareText)
-          alert("✅ Score challenge copied to clipboard!\n\n(Farcaster sharing works after deployment)")
+          alert(`✅ Score copied!\n\nScore: ${score}\nLink: ${gameUrl}\n\nShare it on Farcaster!`)
         }
       }
     } catch (error) {
-      console.error("[v0] Error sharing:", error)
+      console.error("[v0] Error in share handler:", error)
       alert("Unable to share. Please try again.")
     } finally {
       setIsSharing(false)
@@ -59,9 +68,9 @@ ${gameUrl}
   return (
     <Button
       onClick={handleShare}
-      disabled={isSharing}
-      className="bg-[#edc22e] text-white hover:bg-[#edcc61] disabled:opacity-50"
-      title={sdk ? "Share score to Farcaster" : "Copy score (Deploy for Farcaster sharing)"}
+      disabled={isSharing || score === 0}
+      className="bg-[#edc22e] text-white hover:bg-[#edcc61] disabled:opacity-50 font-bold"
+      title={score > 0 ? "Share your score and challenge friends" : "Finish a game to share your score"}
     >
       {isSharing ? "Sharing..." : `Share Score (${score})`}
     </Button>
