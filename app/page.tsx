@@ -229,7 +229,7 @@ export default function Home() {
       ) : (
         <>
           {/* In-Game Navigation */}
-          <div className="absolute right-4 top-4 flex flex-col sm:flex-row items-end sm:items-center gap-2 z-10 max-w-[calc(100vw-2rem)]">
+          <div className="absolute right-4 top-4 z-10">
             <Button
               onClick={() => setGameStarted(false)}
               variant="outline"
@@ -237,11 +237,10 @@ export default function Home() {
             >
               Exit Game
             </Button>
-            <WalletConnect />
           </div>
 
           <div className="mb-6 text-center z-10 relative">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#4dd9ff] via-[#ff00ff] to-[#ffff00] bg-clip-text text-transparent glow-text">
+            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#4dd9ff] via-[#ff00ff] to-[#ffff00] bg-clip-text text-transparent glow-text">
               2048
             </h1>
           </div>
