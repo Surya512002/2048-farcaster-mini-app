@@ -27,7 +27,7 @@ export function Onboarding() {
             <h2 className="mb-2 text-4xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
               Welcome to 2048
             </h2>
-            <p className="text-sm text-cyan-300 font-medium">The Ultimate Farcaster Mini App on Base</p>
+            <p className="text-sm text-cyan-300 font-medium">Farcaster Base App • Gaming on Base Network</p>
           </div>
 
           {/* Content Grid */}
@@ -50,7 +50,7 @@ export function Onboarding() {
                 <h3 className="font-semibold text-white">Goal & Rewards</h3>
               </div>
               <p className="text-sm text-gray-400 ml-8">
-                Reach 2048 and compete for the top spot on the Farcaster Mini App leaderboard. Share your epic wins on Farcaster!
+                Reach 2048 and compete for the top spot on the Farcaster Base App leaderboard. Share your epic wins on Farcaster!
               </p>
             </div>
 
@@ -61,9 +61,9 @@ export function Onboarding() {
                 <h3 className="font-semibold text-white">Quick Start</h3>
               </div>
               <ol className="text-sm text-gray-400 ml-8 space-y-1">
-                <li>1. Connect your wallet on Base network</li>
+                <li>1. Connect your Base wallet</li>
                 <li>2. Pay 0.001 USDC via Base to start a game</li>
-                <li>3. Compete on Farcaster leaderboards</li>
+                <li>3. Compete on Farcaster Base App leaderboards</li>
               </ol>
             </div>
 
@@ -76,8 +76,8 @@ export function Onboarding() {
               <div className="ml-8">
                 <ul className="text-sm text-gray-400 space-y-0.5">
                   <li>• Play on Base network with USDC payments</li>
-                  <li>• Share scores directly on Farcaster</li>
-                  <li>• Weekly Farcaster Mini App leaderboards</li>
+                  <li>• Share scores directly on Farcaster Base App</li>
+                  <li>• Weekly Farcaster Base App leaderboards</li>
                   <li>• Smooth web3 gaming experience</li>
                 </ul>
               </div>
@@ -90,13 +90,13 @@ export function Onboarding() {
               onClick={() => setIsOpen(false)}
               className="flex-1 rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-bold py-3 px-4 transition-all duration-200 shadow-lg hover:shadow-cyan-500/30 text-base"
             >
-              Let's Play on Farcaster
+              Play on Farcaster Base App
             </button>
           </div>
 
           {/* Brand Footer */}
           <div className="mt-6 pt-4 border-t border-cyan-500/10 text-center text-xs text-gray-500">
-            2048 Mini App • Powered by Farcaster & Base
+            Farcaster Base App • Powered by Base Network
           </div>
         </div>
       </div>
