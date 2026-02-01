@@ -2,83 +2,97 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+ 
+@layer base {
+  :root {
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+    --card: #1e293b;
+    --card-foreground: #f1f5f9;
+    --popover: #0f172a; /* Added from shadcn defaults */
+    --popover-foreground: #f1f5f9; /* Added from shadcn defaults */
+    --primary: #22d3ee;
+    --primary-foreground: #0f172a;
+    --secondary: #a855f7;
+    --secondary-foreground: #f1f5f9;
+    --muted: #475569;
+    --muted-foreground: #cbd5e1;
+    --accent: #06b6d4;
+    --accent-foreground: #0f172a;
+    --destructive: #ef4444;
+    --destructive-foreground: #f1f5f9;
+    --border: #334155;
+    --input: #1e293b;
+    --ring: #22d3ee;
+    --chart-1: oklch(0.646 0.222 41.116); /* Added from shadcn defaults */
+    --chart-2: oklch(0.6 0.118 184.704); /* Added from shadcn defaults */
+    --chart-3: oklch(0.398 0.07 227.392); /* Added from shadcn defaults */
+    --chart-4: oklch(0.828 0.189 84.429); /* Added from shadcn defaults */
+    --chart-5: oklch(0.769 0.188 70.08); /* Added from shadcn defaults */
+    --radius: 0.625rem; /* Added from shadcn defaults */
+    --sidebar: #0f172a; /* Added from shadcn defaults, using existing background */
+    --sidebar-foreground: #f1f5f9; /* Added from shadcn defaults, using existing foreground */
+    --sidebar-primary: #22d3ee; /* Added from shadcn defaults, using existing primary */
+    --sidebar-primary-foreground: #0f172a; /* Added from shadcn defaults, using existing primary-foreground */
+    --sidebar-accent: #06b6d4; /* Added from shadcn defaults, using existing accent */
+    --sidebar-accent-foreground: #0f172a; /* Added from shadcn defaults, using existing accent-foreground */
+    --sidebar-border: #334155; /* Added from shadcn defaults, using existing border */
+    --sidebar-ring: #22d3ee; /* Added from shadcn defaults, using existing ring */
+  }
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  .dark {
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+    --card: #1e293b;
+    --card-foreground: #f1f5f9;
+    --popover: #0f172a; /* Added from shadcn defaults */
+    --popover-foreground: #f1f5f9; /* Added from shadcn defaults */
+    --primary: #22d3ee;
+    --primary-foreground: #0f172a;
+    --secondary: #a855f7;
+    --secondary-foreground: #f1f5f9;
+    --muted: #475569;
+    --muted-foreground: #cbd5e1;
+    --accent: #06b6d4;
+    --accent-foreground: #0f172a;
+    --destructive: #ef4444;
+    --destructive-foreground: #f1f5f9;
+    --border: #334155;
+    --input: #1e293b;
+    --ring: #22d3ee;
+    --chart-1: oklch(0.488 0.243 264.376); /* Added from shadcn defaults */
+    --chart-2: oklch(0.696 0.17 162.48); /* Added from shadcn defaults */
+    --chart-3: oklch(0.769 0.188 70.08); /* Added from shadcn defaults */
+    --chart-4: oklch(0.627 0.265 303.9); /* Added from shadcn defaults */
+    --chart-5: oklch(0.645 0.246 16.439); /* Added from shadcn defaults */
+    --sidebar: #0f172a; /* Added from shadcn defaults, using existing background */
+    --sidebar-foreground: #f1f5f9; /* Added from shadcn defaults, using existing foreground */
+    --sidebar-primary: #22d3ee; /* Added from shadcn defaults, using existing primary */
+    --sidebar-primary-foreground: #0f172a; /* Added from shadcn defaults, using existing primary-foreground */
+    --sidebar-accent: #06b6d4; /* Added from shadcn defaults, using existing accent */
+    --sidebar-accent-foreground: #0f172a; /* Added from shadcn defaults, using existing accent-foreground */
+    --sidebar-border: #334155; /* Added from shadcn defaults, using existing border */
+    --sidebar-ring: #22d3ee; /* Added from shadcn defaults, using existing ring */
+  }
 
-.dark {
-  --background: #000000; /* Preserved from existing */
-  --foreground: #ffffff; /* Preserved from existing */
-  --card: #1a1a1a; /* Preserved from existing */
-  --card-foreground: #ffffff; /* Preserved from existing */
-  --border: #333333; /* Preserved from existing */
+  /* Merged from shadcn and existing styles */
+  * {
+    @apply border-border outline-ring/50;
+  }
 
-  /* Remaining dark mode variables from existing (oklch values already present) */
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  body {
+    @apply bg-background text-foreground;
+    background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
+    min-height: 100vh;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback"; /* Preserved from existing */
-  --font-mono: "Geist Mono", "Geist Mono Fallback"; /* Preserved from existing */
+  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -116,23 +130,13 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-/* Added neon glow effects and hexagonal tile styles for cyberpunk theme */
+ 
 @layer components {
-  /* Animations */
+  /* ===== ANIMATIONS ===== */
   @keyframes fade-in {
     from {
       opacity: 0;
-      transform: scale(0.5);
+      transform: scale(0.95);
     }
     to {
       opacity: 1;
@@ -141,52 +145,111 @@
   }
 
   @keyframes bounce-in {
-    from {
+    0% {
       opacity: 0;
       transform: scale(0.8);
     }
-    to {
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
       opacity: 1;
       transform: scale(1);
     }
   }
 
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(34, 211, 238, 0.8);
+    }
+  }
+
   .animate-fade-in {
-    animation: fade-in 0.15s ease-out;
+    animation: fade-in 0.3s ease-out;
   }
 
   .animate-bounce-in {
-    animation: bounce-in 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: bounce-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  /* Hexagonal tile styling */
-  .hexagon-tile {
-    aspect-ratio: 1;
-    border-radius: 50%;
+  .animate-slide-in {
+    animation: slide-in-right 0.3s ease-out;
   }
 
-  /* Neon glow effects */
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* ===== NEON GLOW EFFECTS ===== */
   .glow-neon {
     text-shadow: 0 0 10px currentColor;
     box-shadow: 0 0 20px currentColor, inset 0 0 10px currentColor;
   }
 
   .glow-neon-cyan {
-    box-shadow: 0 0 20px #4dd9ff, 0 0 40px #00d4ff, inset 0 0 10px #00d4ff;
-    border-color: #4dd9ff;
+    box-shadow: 0 0 20px #22d3ee, 0 0 40px #06b6d4, inset 0 0 10px rgba(34, 211, 238, 0.3);
+    border-color: #22d3ee;
   }
 
   .glow-neon-purple {
-    box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff, inset 0 0 10px #ff00ff;
-    border-color: #ff00ff;
+    box-shadow: 0 0 20px #a855f7, 0 0 40px #a855f7, inset 0 0 10px rgba(168, 85, 247, 0.3);
+    border-color: #a855f7;
   }
 
   .glow-neon-yellow {
-    box-shadow: 0 0 20px #ffff00, 0 0 40px #ffff00, inset 0 0 10px #ffff00;
-    border-color: #ffff00;
+    box-shadow: 0 0 20px #fbbf24, 0 0 40px #fbbf24, inset 0 0 10px rgba(251, 191, 36, 0.3);
+    border-color: #fbbf24;
   }
 
   .glow-text {
-    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px rgba(34, 211, 238, 0.5);
+  }
+
+  /* ===== GLASS MORPHISM ===== */
+  .glass {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+  }
+
+  /* ===== GRADIENTS ===== */
+  .gradient-cyan-purple {
+    background: linear-gradient(135deg, #22d3ee 0%, #a855f7 100%);
+  }
+
+  .gradient-purple-cyan {
+    background: linear-gradient(135deg, #a855f7 0%, #22d3ee 100%);
+  }
+
+  /* ===== SMOOTH TRANSITIONS ===== */
+  button, a {
+    @apply transition-all duration-200;
+  }
+
+  /* ===== UTILITY CLASSES ===== */
+  .farcaster-badge {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/30;
+  }
+
+  .farcaster-text {
+    @apply bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent;
+  }
+
+  .base-badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-300 font-medium text-xs;
   }
 }
