@@ -187,7 +187,7 @@ export default function Home() {
               </div>
               <div className="hidden sm:flex flex-col leading-tight">
                 <span className="text-xs font-bold text-white">2048</span>
-                <span className="text-[10px] text-cyan-400">Farcaster Base App</span>
+                <span className="text-[10px] text-cyan-400">Farcaster and Base app</span>
               </div>
             </div>
             <WalletConnect />
@@ -199,7 +199,7 @@ export default function Home() {
             <div className="mb-8 space-y-4 max-w-2xl">
               <div className="inline-block rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 px-4 py-1.5">
                 <p className="text-xs sm:text-sm font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                  🚀 Play on Farcaster Base App • Gaming on Base Network
+                  🚀 Play on Farcaster and Base app • Gaming on Base Network
                 </p>
               </div>
 
@@ -208,7 +208,7 @@ export default function Home() {
               </h1>
 
               <p className="text-lg sm:text-xl text-gray-300 max-w-xl">
-                The ultimate puzzle game on Farcaster Base App. Connect your wallet, compete with the community, and climb the leaderboard.
+                The ultimate puzzle game on Farcaster and Base app. Connect your wallet, compete with the community, and climb the leaderboard.
               </p>
 
               {/* Status Section */}
@@ -232,7 +232,7 @@ export default function Home() {
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-cyan-400">→</span>
-                      <span>Share wins on Farcaster Base App</span>
+                      <span>Share wins on Farcaster and Base app</span>
                     </div>
                   </div>
                 </div>
@@ -244,7 +244,7 @@ export default function Home() {
                   onClick={handlePlayClick}
                   className="mt-8 w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 transition-all duration-200 shadow-lg hover:shadow-cyan-500/40 text-lg"
                 >
-                  Play Now on Farcaster Base App
+                  Play Now on Farcaster and Base app
                 </button>
               ) : (
                 <div className="mt-6 text-sm text-gray-400">
@@ -255,7 +255,7 @@ export default function Home() {
 
             {/* Footer Badge */}
             <div className="absolute bottom-4 left-4 right-4 text-center text-xs text-gray-500">
-              Farcaster Base App • Powered by Base Network
+              Farcaster and Base app • Powered by Base Network
             </div>
           </div>
         </>
@@ -267,7 +267,7 @@ export default function Home() {
               <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center">
                 <span className="text-white font-bold text-xs">2048</span>
               </div>
-              <span className="text-xs font-bold text-cyan-400">Farcaster Base App</span>
+              <span className="text-xs font-bold text-cyan-400">Farcaster and Base app</span>
             </div>
 
             <Button
@@ -283,7 +283,7 @@ export default function Home() {
             <h1 className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-cyan-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent">
               2048
             </h1>
-            <p className="text-xs text-cyan-400 mt-1">Playing on Farcaster Base App • Base Network</p>
+            <p className="text-xs text-cyan-400 mt-1">Playing on Farcaster and Base app • Base Network</p>
           </div>
 
           {/* Game and Leaderboard */}

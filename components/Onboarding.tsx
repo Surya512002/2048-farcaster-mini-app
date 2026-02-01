@@ -1,5 +1,7 @@
 "use client"
 
+import React from "react"
+
 import { useState } from "react"
 import { X, Zap, Trophy, Share2, Gamepad2 } from "lucide-react"
 
@@ -8,8 +10,17 @@ export function Onboarding() {
 
   if (!isOpen) return null
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      setIsOpen(false)
+    }
+  }
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-black/70 to-black/50 backdrop-blur-sm p-4">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-black/70 to-black/50 backdrop-blur-sm p-4"
+      onClick={handleBackdropClick}
+    >
       <div className="relative max-w-2xl rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8 shadow-2xl border border-cyan-500/20">
         <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-cyan-500/5 to-purple-500/5 pointer-events-none" />
         
@@ -27,7 +38,7 @@ export function Onboarding() {
             <h2 className="mb-2 text-4xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
               Welcome to 2048
             </h2>
-            <p className="text-sm text-cyan-300 font-medium">Farcaster Base App • Gaming on Base Network</p>
+            <p className="text-sm text-cyan-300 font-medium">Farcaster and Base app • Gaming on Base Network</p>
           </div>
 
           {/* Content Grid */}
@@ -50,7 +61,7 @@ export function Onboarding() {
                 <h3 className="font-semibold text-white">Goal & Rewards</h3>
               </div>
               <p className="text-sm text-gray-400 ml-8">
-                Reach 2048 and compete for the top spot on the Farcaster Base App leaderboard. Share your epic wins on Farcaster!
+                Reach 2048 and compete for the top spot on the Farcaster and Base app leaderboard. Share your epic wins on Farcaster!
               </p>
             </div>
 
@@ -63,7 +74,7 @@ export function Onboarding() {
               <ol className="text-sm text-gray-400 ml-8 space-y-1">
                 <li>1. Connect your Base wallet</li>
                 <li>2. Pay 0.001 USDC via Base to start a game</li>
-                <li>3. Compete on Farcaster Base App leaderboards</li>
+                <li>3. Compete on Farcaster and Base app leaderboards</li>
               </ol>
             </div>
 
@@ -76,8 +87,8 @@ export function Onboarding() {
               <div className="ml-8">
                 <ul className="text-sm text-gray-400 space-y-0.5">
                   <li>• Play on Base network with USDC payments</li>
-                  <li>• Share scores directly on Farcaster Base App</li>
-                  <li>• Weekly Farcaster Base App leaderboards</li>
+                  <li>• Share scores directly on Farcaster and Base app</li>
+                  <li>• Weekly Farcaster and Base app leaderboards</li>
                   <li>• Smooth web3 gaming experience</li>
                 </ul>
               </div>
@@ -90,13 +101,13 @@ export function Onboarding() {
               onClick={() => setIsOpen(false)}
               className="flex-1 rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-bold py-3 px-4 transition-all duration-200 shadow-lg hover:shadow-cyan-500/30 text-base"
             >
-              Play on Farcaster Base App
+              Play on Farcaster and Base app
             </button>
           </div>
 
           {/* Brand Footer */}
           <div className="mt-6 pt-4 border-t border-cyan-500/10 text-center text-xs text-gray-500">
-            Farcaster Base App • Powered by Base Network
+            Farcaster and Base app • Powered by Base Network
           </div>
         </div>
       </div>
