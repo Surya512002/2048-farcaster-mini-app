@@ -38,9 +38,8 @@ export function Onboarding() {
           <div>
             <h3 className="font-semibold mb-2">Getting Started</h3>
             <ol className="text-sm space-y-1 list-decimal list-inside">
-              <li>Sign in with your Farcaster account</li>
               <li>Connect your wallet on Base network</li>
-              <li>Pay 1 USDC per game</li>
+              <li>Pay 0.001 USDC per game</li>
               <li>Start playing and compete on the leaderboard</li>
             </ol>
           </div>
