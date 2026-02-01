@@ -1,8 +1,8 @@
 // USDC on Base network
-export const USDC_TOKEN_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b1566dA8b16" // Official USDC on Base
+export const USDC_TOKEN_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b1566dA8b16" // Official USDC on Base with proper checksum
 export const PAYMENT_AMOUNT_USDC = "0.001" // 0.001 USDC = $0.001
 export const PAYMENT_AMOUNT_USDC_WEI = "1000" // 0.001 USDC in wei (6 decimals = 1000)
-export const RECIPIENT_WALLET = "0xb4bd7d410543cb27f42c562ab3ff5dc12fbdd42f"
+export const RECIPIENT_WALLET = "0xB4BD7D410543cB27f42c562ab3fF5DC12fBDd42F" // Recipient with proper checksum
 export const BASE_CHAIN_ID = 8453
 
 // USDC Contract ABI (minimal - only needed functions)
