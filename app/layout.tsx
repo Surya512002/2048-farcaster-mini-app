@@ -10,9 +10,9 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "2048 Game - Reach 2048 and compete on Base",
+  title: "2048 Mini App - Play on Farcaster & Base",
   description:
-    "Play the addictive 2048 puzzle game on Farcaster. Sign in, pay per game, and compete on the weekly leaderboard.",
+    "Experience the ultimate 2048 puzzle game on Farcaster through Base network. Connect your wallet, compete with players, and climb the leaderboard.",
   generator: "v0.app",
   other: {
     "base:app_id": "696282498a6eeb04b568dccb",
@@ -22,14 +22,14 @@ export const metadata: Metadata = {
     apple: "/icon.png",
   },
   openGraph: {
-    title: "2048 Game - Play on Farcaster",
-    description: "Join the tiles, reach 2048, and compete with other players. Play now on Base network.",
+    title: "2048 Mini App - Farcaster Gaming",
+    description: "Play 2048 on Farcaster and Base. Merge tiles, reach 2048, compete on weekly leaderboards.",
     type: "website",
   },
 }
 
 export const viewport: Viewport = {
-  themeColor: "#faf8ef",
+  themeColor: "#0f172a",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,

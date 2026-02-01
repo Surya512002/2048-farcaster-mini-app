@@ -28,13 +28,13 @@ export default function ShareButton({ score, sdk }: ShareButtonProps) {
       const gameUrl = "https://2048-farcaster-mini-app.vercel.app"
       
       // Create a compelling share message with the score and link
-      const shareText = `🎮 I just scored ${score} points in 2048! 
+      const shareText = `🎮 I just scored ${score} points on the 2048 Farcaster Mini App! 
 
-Can you beat my score? Play and challenge me now!
+Playing on Base network, can you beat my score? Challenge me now!
 
-${gameUrl}
+🔗 ${gameUrl}
 
-#2048Game #FarcasterMiniApp #BaseChain`
+#2048MiniApp #Farcaster #BaseNetwork #FarcasterGaming`
 
       console.log("[v0] Share message:", shareText)
       console.log("[v0] SDK available:", !!sdk)

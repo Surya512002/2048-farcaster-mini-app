@@ -179,59 +179,111 @@ export default function Home() {
 
       {!gameStarted ? (
         <>
-          {/* Header Navigation */}
-          <div className="absolute right-4 top-4 z-10">
+          {/* Header with Branding */}
+          <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-4 sm:px-6 py-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">2048</span>
+              </div>
+              <div className="hidden sm:flex flex-col leading-tight">
+                <span className="text-xs font-bold text-white">2048</span>
+                <span className="text-[10px] text-cyan-400">Farcaster Mini App</span>
+              </div>
+            </div>
             <WalletConnect />
           </div>
 
           {/* Main Content */}
-          <div className="mb-6 text-center z-10 relative">
-            <h1 className="mb-2 text-6xl font-bold bg-gradient-to-r from-[#4dd9ff] via-[#ff00ff] to-[#ffff00] bg-clip-text text-transparent glow-text">
-              2048
-            </h1>
-            <p className="text-base text-[#4dd9ff]">
-              Join the tiles, get to <strong>2048!</strong>
-            </p>
+          <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center">
+            {/* Hero Section */}
+            <div className="mb-8 space-y-4 max-w-2xl">
+              <div className="inline-block rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 px-4 py-1.5">
+                <p className="text-xs sm:text-sm font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                  🚀 Play on Farcaster • Base Network Gaming
+                </p>
+              </div>
 
-            {/* Onboarding Steps */}
-            <div className="mt-6 space-y-2 text-sm font-semibold">
-              {!isConnected && <p className="text-[#4dd9ff]">Step 1: Connect your wallet on Base</p>}
-              {isConnected && <p className="text-[#4dd9ff]">Step 2: Click Play to start playing</p>}
+              <h1 className="text-5xl sm:text-7xl font-black bg-gradient-to-r from-cyan-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent drop-shadow-lg">
+                2048
+              </h1>
+
+              <p className="text-lg sm:text-xl text-gray-300 max-w-xl">
+                The ultimate puzzle game on Farcaster. Connect your wallet, compete with the community, and climb the leaderboard.
+              </p>
+
+              {/* Status Section */}
+              <div className="mt-8 space-y-3">
+                <div className="rounded-xl bg-gradient-to-br from-slate-800/50 to-slate-700/50 border border-cyan-500/20 p-4">
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <div className={`w-2.5 h-2.5 rounded-full ${isConnected ? 'bg-green-400 animate-pulse' : 'bg-gray-600'}`} />
+                    <span className="text-sm text-gray-300">
+                      {isConnected ? 'Base Wallet Connected' : 'Ready to Connect'}
+                    </span>
+                  </div>
+
+                  <div className="space-y-1.5 text-xs text-gray-400">
+                    <div className="flex items-center gap-2">
+                      <span className="text-cyan-400">→</span>
+                      <span>Connect wallet on Base network</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-cyan-400">→</span>
+                      <span>Pay 0.001 USDC per game</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-cyan-400">→</span>
+                      <span>Share wins on Farcaster</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              {isConnected ? (
+                <button
+                  onClick={handlePlayClick}
+                  className="mt-8 w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 transition-all duration-200 shadow-lg hover:shadow-cyan-500/40 text-lg"
+                >
+                  Play Now on Farcaster
+                </button>
+              ) : (
+                <div className="mt-6 text-sm text-gray-400">
+                  Connect your wallet to start playing
+                </div>
+              )}
             </div>
 
-            {/* Status Indicators */}
-            <div className="mt-4 space-y-1 text-xs">
-              {isConnected && <p className="text-[#ff00ff]">✓ Wallet connected on Base</p>}
+            {/* Footer Badge */}
+            <div className="absolute bottom-4 left-4 right-4 text-center text-xs text-gray-500">
+              Powered by Farcaster • Running on Base Network
             </div>
-
-            {/* Play Button */}
-            {isConnected && !gameStarted && (
-              <button
-                onClick={handlePlayClick}
-                className="mt-6 min-h-12 rounded-lg bg-[#ff00ff]/80 hover:bg-[#ff00ff] text-white font-bold px-8 py-3 transition-all text-lg w-full sm:w-auto shadow-lg hover:shadow-xl border-2 border-[#ff00ff] glow-neon-purple"
-              >
-                Play Now
-              </button>
-            )}
           </div>
         </>
       ) : (
         <>
-          {/* In-Game Navigation */}
-          <div className="absolute right-4 top-4 z-10">
+          {/* In-Game Header */}
+          <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-4 sm:px-6 py-3 bg-gradient-to-b from-slate-900/80 to-transparent">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center">
+                <span className="text-white font-bold text-xs">2048</span>
+              </div>
+              <span className="text-xs font-bold text-cyan-400">Farcaster Mini App</span>
+            </div>
+
             <Button
               onClick={() => setGameStarted(false)}
               variant="outline"
-              className="min-h-10 px-4 sm:px-6 font-semibold bg-[#4d00ff]/80 hover:bg-[#6600ff] text-white border-[#4dd9ff] text-sm sm:text-base whitespace-nowrap"
+              className="min-h-10 px-4 sm:px-6 font-semibold bg-purple-500/20 hover:bg-purple-500/30 text-cyan-300 border-purple-500/50 text-sm whitespace-nowrap transition-all duration-200"
             >
               Exit Game
             </Button>
           </div>
 
-          <div className="mb-6 text-center z-10 relative">
-            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#4dd9ff] via-[#ff00ff] to-[#ffff00] bg-clip-text text-transparent glow-text">
+          <div className="pt-12 mb-4 text-center z-10 relative">
+            <h1 className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-cyan-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent">
               2048
             </h1>
+            <p className="text-xs text-cyan-400 mt-1">Playing on Base Network via Farcaster</p>
           </div>
 
           {/* Game and Leaderboard */}
