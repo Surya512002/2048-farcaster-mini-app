@@ -61,6 +61,7 @@ export default function PaymentModal({ onPaymentSuccess, fid }: PaymentModalProp
     try {
       setLocalError("")
       console.log("[v0] Sending USDC transfer to:", RECIPIENT_WALLET, "Amount:", PAYMENT_AMOUNT_USDC, "USDC")
+      console.log("[v0] Transaction details - USDC Contract:", USDC_TOKEN_ADDRESS, "Recipient:", RECIPIENT_WALLET)
 
       // Encode the transfer function call
       const data = encodeFunctionData({
@@ -69,10 +70,13 @@ export default function PaymentModal({ onPaymentSuccess, fid }: PaymentModalProp
         args: [RECIPIENT_WALLET as `0x${string}`, BigInt(PAYMENT_AMOUNT_USDC_WEI)],
       })
 
+      console.log("[v0] Encoded transaction data:", data)
+
       sendTransaction({
         to: USDC_TOKEN_ADDRESS as `0x${string}`,
         data,
         chainId: base.id,
+        account: address,
       })
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : "Payment failed"
