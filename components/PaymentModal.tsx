@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { useAccount, useSendTransaction, useWaitForTransactionReceipt, useChainId, useSwitchChain } from "wagmi"
-import { parseEther } from "viem"
+import { encodeFunctionData } from "viem"
 import { base } from "wagmi/chains"
 import { Button } from "@/components/ui/button"
-import { PAYMENT_AMOUNT_ETH, RECIPIENT_WALLET } from "@/lib/constants"
+import { USDC_TOKEN_ADDRESS, PAYMENT_AMOUNT_USDC, PAYMENT_AMOUNT_USDC_WEI, RECIPIENT_WALLET, USDC_ABI } from "@/lib/constants"
+import { parseEther } from "viem"
 
 interface PaymentModalProps {
   onPaymentSuccess: () => void
@@ -20,6 +21,7 @@ export default function PaymentModal({ onPaymentSuccess, fid }: PaymentModalProp
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash: txHash, chainId: base.id })
   const [localError, setLocalError] = useState<string>("")
   const [waitingForConfirmation, setWaitingForConfirmation] = useState(false)
+  const PAYMENT_AMOUNT_ETH = "0.1"; // Declaring PAYMENT_AMOUNT_ETH variable
 
   useEffect(() => {
     if (isSuccess && txHash) {
@@ -60,11 +62,18 @@ export default function PaymentModal({ onPaymentSuccess, fid }: PaymentModalProp
 
     try {
       setLocalError("")
-      console.log("[v0] Sending transaction to:", RECIPIENT_WALLET, "Amount:", PAYMENT_AMOUNT_ETH, "ETH")
+      console.log("[v0] Sending USDC transfer to:", RECIPIENT_WALLET, "Amount:", PAYMENT_AMOUNT_USDC, "USDC")
+
+      // Encode the transfer function call
+      const data = encodeFunctionData({
+        abi: USDC_ABI,
+        functionName: "transfer",
+        args: [RECIPIENT_WALLET as `0x${string}`, BigInt(PAYMENT_AMOUNT_USDC_WEI)],
+      })
 
       sendTransaction({
-        to: RECIPIENT_WALLET as `0x${string}`,
-        value: parseEther(PAYMENT_AMOUNT_ETH),
+        to: USDC_TOKEN_ADDRESS as `0x${string}`,
+        data,
         chainId: base.id,
       })
     } catch (err) {
@@ -91,7 +100,7 @@ export default function PaymentModal({ onPaymentSuccess, fid }: PaymentModalProp
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="rounded-lg bg-white p-8 text-center max-w-md">
         <h2 className="mb-2 text-2xl font-bold text-[#776e65]">Game Fee Required</h2>
-        <p className="mb-6 text-gray-600">Pay {PAYMENT_AMOUNT_ETH} ETH on Base Network to play</p>
+        <p className="mb-6 text-gray-600">Pay {PAYMENT_AMOUNT_USDC} USDC on Base Network to play</p>
 
         {(localError || isError) && (
           <div className="mb-4 rounded bg-red-100 p-2 text-sm text-red-700">
@@ -106,9 +115,10 @@ export default function PaymentModal({ onPaymentSuccess, fid }: PaymentModalProp
 
         <div className="mb-6 rounded bg-[#faf8ef] p-4">
           <p className="text-sm text-gray-700">
-            Amount: <strong>{PAYMENT_AMOUNT_ETH} ETH</strong>
+            Amount: <strong>{PAYMENT_AMOUNT_USDC} USDC</strong>
           </p>
           <p className="text-xs text-gray-500">Network: Base (Chain ID: {base.id})</p>
+          <p className="text-xs text-gray-500">Token: USDC (Official)</p>
           {fid && <p className="text-xs text-gray-500">FID: {fid}</p>}
           {address && (
             <p className="text-xs text-gray-500">
@@ -120,6 +130,10 @@ export default function PaymentModal({ onPaymentSuccess, fid }: PaymentModalProp
         {txHash && !isSuccess && (
           <div className="mb-4 rounded bg-blue-100 p-2 text-sm text-blue-700">
             {isConfirming ? "Confirming transaction..." : "Transaction sent, waiting for confirmation..."}
+            <br />
+            <a href={`https://basescan.org/tx/${txHash}`} target="_blank" rel="noopener noreferrer" className="text-xs underline">
+              View on BaseScan
+            </a>
           </div>
         )}
 
@@ -137,7 +151,7 @@ export default function PaymentModal({ onPaymentSuccess, fid }: PaymentModalProp
                 : chainId !== base.id
                   ? "Switch to Base Network"
                   : isConnected
-                    ? `Pay ${PAYMENT_AMOUNT_ETH} ETH`
+                    ? `Pay ${PAYMENT_AMOUNT_USDC} USDC`
                     : "Connect Wallet First"}
         </Button>
       </div>
