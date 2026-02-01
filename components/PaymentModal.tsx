@@ -6,7 +6,6 @@ import { encodeFunctionData } from "viem"
 import { base } from "wagmi/chains"
 import { Button } from "@/components/ui/button"
 import { USDC_TOKEN_ADDRESS, PAYMENT_AMOUNT_USDC, PAYMENT_AMOUNT_USDC_WEI, RECIPIENT_WALLET, USDC_ABI } from "@/lib/constants"
-import { parseEther } from "viem"
 
 interface PaymentModalProps {
   onPaymentSuccess: () => void
@@ -21,7 +20,6 @@ export default function PaymentModal({ onPaymentSuccess, fid }: PaymentModalProp
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash: txHash, chainId: base.id })
   const [localError, setLocalError] = useState<string>("")
   const [waitingForConfirmation, setWaitingForConfirmation] = useState(false)
-  const PAYMENT_AMOUNT_ETH = "0.1"; // Declaring PAYMENT_AMOUNT_ETH variable
 
   useEffect(() => {
     if (isSuccess && txHash) {

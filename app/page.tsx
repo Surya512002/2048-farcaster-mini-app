@@ -180,15 +180,7 @@ export default function Home() {
       {!gameStarted ? (
         <>
           {/* Header Navigation */}
-          <div className="absolute right-4 top-4 flex flex-col sm:flex-row items-end sm:items-center gap-2 z-10">
-            <Button
-              onClick={handleSignIn}
-              disabled={isLoadingSignIn}
-              variant="outline"
-              className="min-h-10 px-4 sm:px-6 text-sm sm:text-base font-semibold bg-[#4d00ff]/80 hover:bg-[#6600ff] text-white border-[#4dd9ff] whitespace-nowrap"
-            >
-              {isLoadingSignIn ? "Signing..." : fid ? `FID: ${fid}` : "Sign In"}
-            </Button>
+          <div className="absolute right-4 top-4 z-10">
             <WalletConnect />
           </div>
 
@@ -203,15 +195,12 @@ export default function Home() {
 
             {/* Onboarding Steps */}
             <div className="mt-6 space-y-2 text-sm font-semibold">
-              {!fid && <p className="text-[#4dd9ff]">Step 1: Sign in with Farcaster</p>}
-              {fid && !isConnected && <p className="text-[#4dd9ff]">Step 2: Connect your wallet on Base</p>}
-              {fid && isConnected && <p className="text-[#4dd9ff]">Step 3: Click Play to pay 0.00001 ETH</p>}
+              {!isConnected && <p className="text-[#4dd9ff]">Step 1: Connect your wallet on Base</p>}
+              {isConnected && <p className="text-[#4dd9ff]">Step 2: Click Play to start playing</p>}
             </div>
 
             {/* Status Indicators */}
             <div className="mt-4 space-y-1 text-xs">
-              {sdkLoaded && <p className="text-[#ff00ff]">✓ Connected to Farcaster</p>}
-              {fid && <p className="text-[#ff00ff]">✓ Signed in as FID {fid}</p>}
               {isConnected && <p className="text-[#ff00ff]">✓ Wallet connected on Base</p>}
             </div>
 
