@@ -40,7 +40,7 @@ export function Onboarding() {
             <ol className="text-sm space-y-1 list-decimal list-inside">
               <li>Sign in with your Farcaster account</li>
               <li>Connect your wallet on Base network</li>
-              <li>Pay 0.00001 ETH per game</li>
+              <li>Pay 1 USDC per game</li>
               <li>Start playing and compete on the leaderboard</li>
             </ol>
           </div>
