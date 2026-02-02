@@ -3,8 +3,9 @@ import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
-import WagmiProvider from "@/components/providers/WagmiProvider"
+import { ProvidersWrapper } from "@/app/providers-wrapper"
 import { ThemeProvider } from "@/components/ThemeProvider"
+import Providers from "@/app/providers" // Declare the Providers variable
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -14,8 +15,10 @@ export const metadata: Metadata = {
   description:
     "Experience the ultimate 2048 puzzle game on Farcaster through Base network. Connect your wallet, compete with players, and climb the leaderboard.",
   generator: "v0.app",
+  metadataBase: new URL("https://2048-farcaster-mini-app.vercel.app"),
   other: {
     "base:app_id": "696282498a6eeb04b568dccb",
+    "farcaster:frame": "vNext",
   },
   icons: {
     icon: "/icon.png",
@@ -25,6 +28,14 @@ export const metadata: Metadata = {
     title: "2048 Mini App - Farcaster Gaming",
     description: "Play 2048 on Farcaster and Base. Merge tiles, reach 2048, compete on weekly leaderboards.",
     type: "website",
+    url: "https://2048-farcaster-mini-app.vercel.app",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 }
 
@@ -62,10 +73,10 @@ export default function RootLayout({
       </head>
       <body className={`font-sans antialiased`}>
         <ThemeProvider>
-          <WagmiProvider>
+          <ProvidersWrapper>
             {children}
             <Analytics />
-          </WagmiProvider>
+          </ProvidersWrapper>
         </ThemeProvider>
       </body>
     </html>

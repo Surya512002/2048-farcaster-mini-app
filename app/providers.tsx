@@ -9,12 +9,12 @@ import { OnchainKitProvider } from "@coinbase/onchainkit"
 import { base } from "wagmi/chains"
 import { useState } from "react"
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children, apiKey = "" }: { children: React.ReactNode; apiKey?: string }) {
   const [queryClient] = useState(() => new QueryClient())
 
   return (
     <OnchainKitProvider
-      apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
+      apiKey={apiKey}
       chain={base}
       config={{
         appearance: {
@@ -32,3 +32,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
     </OnchainKitProvider>
   )
 }
+
+// Default export for backward compatibility
+export default Providers
