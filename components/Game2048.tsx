@@ -287,23 +287,25 @@ export default function Game2048({
 
   const getTileColor = (value: number) => {
     const colors: Record<number, string> = {
-      2: "#4dd9ff",
-      4: "#4dd9ff",
-      8: "#00d4ff",
-      16: "#00d4ff",
-      32: "#ff00ff",
-      64: "#ff00ff",
-      128: "#ff00ff",
-      256: "#ff00ff",
-      512: "#00ffff",
-      1024: "#00ffff",
-      2048: "#ffff00",
+      2: "#FF6B6B",      // Vibrant Red
+      4: "#FF8E72",      // Coral
+      8: "#FFB347",      // Orange
+      16: "#FFD93D",     // Golden Yellow
+      32: "#6BCB77",     // Bright Green
+      64: "#4D96FF",     // Bright Blue
+      128: "#A78BFA",    // Purple
+      256: "#F472B6",    // Pink
+      512: "#06B6D4",    // Cyan
+      1024: "#EC4899",   // Hot Pink
+      2048: "#FBBF24",   // Bright Amber
     }
-    return colors[value] || "#6600ff"
+    return colors[value] || "#EC4899"
   }
 
   const getTileTextColor = (value: number) => {
-    return "#ffffff"
+    // Dark text for bright tiles, white for darker tiles
+    const darkTextValues = [16, 32, 64, 128, 256, 512, 1024, 2048]
+    return darkTextValues.includes(value) ? "#1F2937" : "#FFFFFF"
   }
 
   // API integration for score submission
@@ -342,30 +344,30 @@ export default function Game2048({
     <div className="flex flex-col items-center gap-6 w-full px-2">
       <WalletConnect />
 
-      {/* Score Board - Neon Style */}
+      {/* Score Board - Vibrant Style */}
       <div className="flex gap-4 sm:gap-6 w-full justify-center flex-wrap">
-        <div className="rounded-lg bg-[#1a0033]/80 backdrop-blur px-6 sm:px-8 py-3 sm:py-4 text-center shadow-lg border-2 border-[#ff00ff] glow-neon-purple">
-          <div className="text-xs sm:text-sm font-bold uppercase text-[#ff00ff] tracking-widest drop-shadow-lg">
+        <div className="rounded-xl bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8E72]/20 dark:from-[#FF6B6B]/30 dark:to-[#FF8E72]/30 backdrop-blur-sm px-6 sm:px-8 py-4 sm:py-5 text-center shadow-xl border-2 border-[#FF6B6B] dark:border-[#FF8E72]">
+          <div className="text-xs sm:text-sm font-bold uppercase text-[#FF6B6B] dark:text-[#FF8E72] tracking-widest">
             Score
           </div>
-          <div className="text-2xl sm:text-4xl font-bold text-[#00ffff] drop-shadow-lg">{score}</div>
+          <div className="text-3xl sm:text-4xl font-black text-[#FF6B6B] dark:text-[#FBBF24]">{score}</div>
         </div>
-        <div className="rounded-lg bg-[#1a0033]/80 backdrop-blur px-6 sm:px-8 py-3 sm:py-4 text-center shadow-lg border-2 border-[#00ffff] glow-neon-cyan">
-          <div className="text-xs sm:text-sm font-bold uppercase text-[#00ffff] tracking-widest drop-shadow-lg">
+        <div className="rounded-xl bg-gradient-to-br from-[#6BCB77]/20 to-[#4D96FF]/20 dark:from-[#6BCB77]/30 dark:to-[#4D96FF]/30 backdrop-blur-sm px-6 sm:px-8 py-4 sm:py-5 text-center shadow-xl border-2 border-[#6BCB77] dark:border-[#4D96FF]">
+          <div className="text-xs sm:text-sm font-bold uppercase text-[#6BCB77] dark:text-[#4D96FF] tracking-widest">
             Best
           </div>
-          <div className="text-2xl sm:text-4xl font-bold text-[#00ffff] drop-shadow-lg">{bestScore}</div>
+          <div className="text-3xl sm:text-4xl font-black text-[#6BCB77] dark:text-[#06B6D4]">{bestScore}</div>
         </div>
       </div>
 
-      {/* Game Grid - Hexagonal Layout */}
+      {/* Game Grid - Vibrant Layout */}
       <div
-        className="w-full max-w-xs sm:max-w-sm md:max-w-md rounded-2xl bg-[#0a0e27]/90 backdrop-blur p-3 sm:p-4 md:p-6 shadow-2xl border-2 border-[#4dd9ff] overflow-hidden glow-neon-cyan"
+        className="w-full max-w-xs sm:max-w-sm md:max-w-md rounded-3xl bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-800 backdrop-blur p-4 sm:p-5 md:p-6 shadow-2xl border-3 border-slate-200 dark:border-slate-700 overflow-hidden"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className="grid gap-2 sm:gap-3 md:gap-4 w-full aspect-square"
+          className="grid gap-2 sm:gap-2.5 md:gap-3 w-full aspect-square"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)",
@@ -377,7 +379,7 @@ export default function Game2048({
           {tiles.map((tile) => (
             <div
               key={tile.id}
-              className={`hexagon-tile font-bold flex items-center justify-center transition-all duration-200 shadow-lg text-center glow-neon
+              className={`font-black flex items-center justify-center transition-all duration-150 shadow-xl text-center rounded-xl
                 ${tile.isNew ? "animate-fade-in" : ""} 
                 ${tile.isMerged ? "animate-bounce-in" : ""}
               `}
@@ -386,13 +388,11 @@ export default function Game2048({
                 color: getTileTextColor(tile.value),
                 gridColumn: tile.position.col + 1,
                 gridRow: tile.position.row + 1,
-                fontSize: tile.value >= 1000 ? "0.75rem" : tile.value >= 100 ? "1rem" : "1.25rem",
-                fontWeight: "bold",
-                textShadow: `0 0 10px ${getTileColor(tile.value)}, 0 2px 4px rgba(0,0,0,0.5)`,
+                fontSize: tile.value >= 1000 ? "0.85rem" : tile.value >= 100 ? "1.1rem" : "1.5rem",
+                fontWeight: "900",
                 lineHeight: "1.2",
-                border: `2px solid ${getTileColor(tile.value)}`,
-                borderRadius: "50%",
-                boxShadow: `0 0 20px ${getTileColor(tile.value)}, inset 0 0 10px ${getTileColor(tile.value)}`,
+                border: `3px solid ${getTileColor(tile.value)}`,
+                boxShadow: `0 8px 16px ${getTileColor(tile.value)}40, inset 0 -2px 4px rgba(0,0,0,0.2)`,
               }}
             >
               {tile.value}
@@ -402,14 +402,15 @@ export default function Game2048({
 
         {/* Game Over Overlay */}
         {gameOver && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/80 backdrop-blur-sm border-2 border-[#ff00ff]">
-            <div className="text-center">
-              <div className="mb-4 text-3xl sm:text-5xl font-bold text-[#ff00ff] drop-shadow-lg glow-text">
+          <div className="absolute inset-0 flex items-center justify-center rounded-3xl bg-black/85 backdrop-blur-md border-3 border-[#FF6B6B]">
+            <div className="text-center px-4">
+              <div className="mb-6 text-4xl sm:text-6xl font-black text-[#FF6B6B] drop-shadow-lg">
                 Game Over!
               </div>
+              <p className="mb-6 text-sm sm:text-base text-slate-200">Final Score: <span className="font-bold text-[#FBBF24]">{score}</span></p>
               <button
                 onClick={() => onNewGame?.()}
-                className="rounded-lg bg-[#ff00ff]/80 hover:bg-[#ff00ff] px-6 sm:px-8 py-3 sm:py-4 font-bold text-white transition-all shadow-lg text-base sm:text-lg glow-neon-purple border-2 border-[#ff00ff]"
+                className="rounded-xl bg-gradient-to-r from-[#FF6B6B] to-[#FF8E72] hover:from-[#FF5252] hover:to-[#FF6B6B] px-8 sm:px-10 py-3 sm:py-4 font-bold text-white transition-all shadow-lg text-base sm:text-lg border-2 border-[#FF6B6B]"
               >
                 Try Again
               </button>
@@ -419,14 +420,15 @@ export default function Game2048({
 
         {/* Win Overlay */}
         {hasWon && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-[#ffff00]/20 backdrop-blur-sm border-2 border-[#ffff00]">
-            <div className="text-center">
-              <div className="mb-4 text-3xl sm:text-5xl font-bold text-[#ffff00] drop-shadow-lg glow-text">
+          <div className="absolute inset-0 flex items-center justify-center rounded-3xl bg-black/85 backdrop-blur-md border-3 border-[#FBBF24]">
+            <div className="text-center px-4">
+              <div className="mb-6 text-4xl sm:text-6xl font-black text-[#FBBF24] drop-shadow-lg">
                 You Win!
               </div>
+              <p className="mb-6 text-sm sm:text-base text-slate-200">Score: <span className="font-bold text-[#06B6D4]">{score}</span></p>
               <button
                 onClick={() => setHasWon(false)}
-                className="rounded-lg bg-[#ffff00]/80 hover:bg-[#ffff00] px-6 sm:px-8 py-3 sm:py-4 font-bold text-black transition-all shadow-lg text-base sm:text-lg glow-neon-yellow border-2 border-[#ffff00]"
+                className="rounded-xl bg-gradient-to-r from-[#FBBF24] to-[#FFD93D] hover:from-[#FFB700] hover:to-[#FBBF24] px-8 sm:px-10 py-3 sm:py-4 font-bold text-black transition-all shadow-lg text-base sm:text-lg border-2 border-[#FBBF24]"
               >
                 Keep Playing
               </button>
@@ -437,11 +439,11 @@ export default function Game2048({
 
       {/* Controls */}
       <div className="text-center w-full px-2">
-        <p className="mb-3 text-xs sm:text-sm text-[#4dd9ff] font-semibold">Use arrow keys or swipe to play</p>
-        <div className="flex gap-2 sm:gap-3 justify-center flex-wrap">
+        <p className="mb-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-semibold">Use arrow keys or swipe to play</p>
+        <div className="flex gap-3 sm:gap-4 justify-center flex-wrap">
           <button
             onClick={() => onNewGame?.()}
-            className="rounded-lg bg-[#4d00ff]/80 hover:bg-[#6600ff] px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-bold text-white transition-all shadow-lg glow-neon-purple border-2 border-[#4d00ff]"
+            className="rounded-xl bg-gradient-to-r from-[#4D96FF] to-[#A78BFA] hover:from-[#3B82FF] hover:to-[#7C3AED] px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base font-bold text-white transition-all shadow-lg border-2 border-[#4D96FF]"
           >
             New Game
           </button>

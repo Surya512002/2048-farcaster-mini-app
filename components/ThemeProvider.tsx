@@ -14,23 +14,39 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light")
+  const [theme, setTheme] = useState<Theme>("dark")
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
-    const savedTheme = (localStorage.getItem("theme") as Theme) || "light"
+    // Check localStorage or system preference
+    const savedTheme = localStorage.getItem("theme") as Theme | null
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-    const initialTheme = savedTheme || (prefersDark ? "dark" : "light")
+    const initialTheme = (savedTheme || (prefersDark ? "dark" : "light")) as Theme
+    
     setTheme(initialTheme)
-    document.documentElement.classList.toggle("dark", initialTheme === "dark")
+    applyTheme(initialTheme)
   }, [])
+
+  const applyTheme = (newTheme: Theme) => {
+    const htmlElement = document.documentElement
+    if (newTheme === "dark") {
+      htmlElement.classList.add("dark")
+    } else {
+      htmlElement.classList.remove("dark")
+    }
+  }
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light"
     setTheme(newTheme)
     localStorage.setItem("theme", newTheme)
-    document.documentElement.classList.toggle("dark", newTheme === "dark")
+    applyTheme(newTheme)
+    console.log("[v0] Theme toggled to:", newTheme)
+  }
+
+  if (!isMounted) {
+    return <>{children}</>
   }
 
   return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
@@ -41,8 +57,10 @@ export function useTheme() {
   if (!context) {
     // Fallback for development/preview environments
     return {
-      theme: "light" as Theme,
-      toggleTheme: () => {},
+      theme: "dark" as Theme,
+      toggleTheme: () => {
+        console.log("[v0] Theme toggle called but provider not available")
+      },
     }
   }
   return context
