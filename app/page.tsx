@@ -53,6 +53,15 @@ export default function Home() {
   const { theme, toggleTheme } = useTheme()
 
   const sdkRef = useRef<FarcasterSDK | null>(null)
+  const ThemeToggleButton = () => (
+    <button
+      onClick={toggleTheme}
+      className="fixed left-4 top-4 p-2 rounded-lg hover:bg-[#ff00ff]/20 transition-colors border border-[#4dd9ff]/50"
+      aria-label="Toggle theme"
+    >
+      {theme === "light" ? <Moon className="w-6 h-6 text-[#4dd9ff]" /> : <Sun className="w-6 h-6 text-[#ffff00]" />}
+    </button>
+  )
 
   useEffect(() => {
     async function initSDK() {
@@ -169,13 +178,7 @@ export default function Home() {
       {showPaymentModal && <PaymentModal fid={fid} onPaymentSuccess={handlePaymentSuccess} address={null} />}
 
       {/* Theme Toggle */}
-      <button
-        onClick={toggleTheme}
-        className="fixed left-4 top-4 p-2 rounded-lg hover:bg-[#ff00ff]/20 transition-colors border border-[#4dd9ff]/50"
-        aria-label="Toggle theme"
-      >
-        {theme === "light" ? <Moon className="w-6 h-6 text-[#4dd9ff]" /> : <Sun className="w-6 h-6 text-[#ffff00]" />}
-      </button>
+      <ThemeToggleButton />
 
       {!gameStarted ? (
         <>
@@ -258,18 +261,18 @@ export default function Home() {
       ) : (
         <>
           {/* In-Game Header */}
-          <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-4 sm:px-6 py-3 bg-gradient-to-b from-slate-900/80 to-transparent">
+          <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-4 sm:px-6 py-3 bg-gradient-to-b from-slate-900/80 dark:from-slate-950/90 to-transparent">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center">
                 <span className="text-white font-bold text-xs">2048</span>
               </div>
-              <span className="text-xs font-bold text-cyan-400">Farcaster and Base app</span>
+              <span className="text-xs font-bold text-cyan-400 dark:text-cyan-300">Farcaster and Base app</span>
             </div>
 
             <Button
               onClick={() => setGameStarted(false)}
               variant="outline"
-              className="min-h-10 px-4 sm:px-6 font-semibold bg-purple-500/20 hover:bg-purple-500/30 text-cyan-300 border-purple-500/50 text-sm whitespace-nowrap transition-all duration-200"
+              className="min-h-10 px-4 sm:px-6 font-semibold bg-purple-500/20 dark:bg-purple-500/30 hover:bg-purple-500/30 dark:hover:bg-purple-500/40 text-cyan-300 dark:text-cyan-200 border-purple-500/50 dark:border-purple-500/40 text-sm whitespace-nowrap transition-all duration-200"
             >
               Exit Game
             </Button>
