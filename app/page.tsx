@@ -10,20 +10,7 @@ import { Button } from "@/components/ui/button"
 import { useAccount } from "wagmi"
 import { useTheme } from "@/components/ThemeProvider"
 import { Moon, Sun } from "lucide-react"
-
-type FarcasterSDK = {
-  actions: {
-    ready: () => Promise<void>
-    signIn: () => Promise<{ fid?: number; data?: { fid?: number }; user?: { fid?: number } }>
-    composeCast: (options: { body: string }) => Promise<void>
-  }
-}
-
-declare global {
-  interface Window {
-    miniAppSdk?: FarcasterSDK
-  }
-}
+import { FarcasterSDK } from "@farcaster/frame-sdk" // Declare FarcasterSDK
 
 const isPreviewEnvironment = () => {
   if (typeof window === "undefined") return true
@@ -31,8 +18,7 @@ const isPreviewEnvironment = () => {
   return (
     hostname.includes("vusercontent.net") ||
     hostname.includes("localhost") ||
-    hostname.includes("127.0.0.1") ||
-    window.parent !== window
+    hostname.includes("127.0.0.1")
   )
 }
 
@@ -52,7 +38,7 @@ export default function Home() {
   const { isConnected } = useAccount()
   const { theme, toggleTheme } = useTheme()
 
-  const sdkRef = useRef<FarcasterSDK | null>(null)
+  const sdkRef = useRef<any>(null)
   const ThemeToggleButton = () => (
     <button
       onClick={toggleTheme}
@@ -65,36 +51,54 @@ export default function Home() {
 
   useEffect(() => {
     async function initSDK() {
-      if (typeof window !== "undefined" && window.miniAppSdk) {
-        sdkRef.current = window.miniAppSdk
-        console.log("[v0] Using injected window.miniAppSdk")
-      } else if (!isPreviewEnvironment()) {
-        try {
-          const { default: sdk } = await import("@farcaster/frame-sdk")
-          sdkRef.current = sdk as unknown as FarcasterSDK
-          console.log("[v0] Using imported Farcaster SDK")
-        } catch (error) {
-          console.log("[v0] SDK import failed:", error)
-          sdkRef.current = null
-        }
-      } else {
-        console.log("[v0] Preview environment - SDK disabled")
-        sdkRef.current = null
-      }
-
       try {
-        await sdkRef.current?.actions?.ready?.()
-        setSdkLoaded(true)
-        console.log("[v0] SDK ready() called successfully")
-
-        if (isInFarcasterFrame()) {
-          console.log("[v0] In Farcaster frame - auto-starting game")
-          setFid(279474)
-          setGameStarted(true)
-          setPaymentComplete(true)
+        if (!isPreviewEnvironment()) {
+          // Try to use miniapp SDK for Base mini apps
+          try {
+            const { sdk } = await import("@farcaster/miniapp-sdk")
+            sdkRef.current = sdk
+            console.log("[v0] Initialized Farcaster Miniapp SDK")
+            
+            // Call ready to signal app is loaded
+            await sdk.ready()
+            setSdkLoaded(true)
+            console.log("[v0] Miniapp SDK ready() called successfully")
+            
+            // Get context information
+            const context = sdk.context
+            if (context?.user?.fid) {
+              setFid(context.user.fid)
+              console.log("[v0] Got user FID from context:", context.user.fid)
+            }
+            
+            // Auto-start game if in frame
+            if (isInFarcasterFrame()) {
+              console.log("[v0] In Farcaster frame - auto-starting game")
+              setGameStarted(true)
+              setPaymentComplete(true)
+            }
+          } catch (error) {
+            console.log("[v0] Miniapp SDK failed, trying frame SDK:", error)
+            // Fallback to frame SDK
+            try {
+              const { default: sdk } = await import("@farcaster/frame-sdk")
+              sdkRef.current = sdk
+              console.log("[v0] Using Farcaster Frame SDK")
+              
+              await sdk.actions?.ready?.()
+              setSdkLoaded(true)
+              console.log("[v0] Frame SDK ready() called successfully")
+            } catch (frameError) {
+              console.log("[v0] Frame SDK also failed:", frameError)
+              setSdkLoaded(false)
+            }
+          }
+        } else {
+          console.log("[v0] Preview environment - SDK disabled")
+          setSdkLoaded(false)
         }
       } catch (error) {
-        console.warn("[v0] SDK ready() failed:", error)
+        console.error("[v0] SDK initialization error:", error)
         setSdkLoaded(false)
       }
     }
@@ -111,16 +115,30 @@ export default function Home() {
         return
       }
 
-      const result = await sdkRef.current.actions.signIn?.()
-      const userFid = result?.fid || result?.data?.fid || result?.user?.fid
-
-      if (userFid) {
-        setFid(userFid)
-        console.log("[v0] Signed in with FID:", userFid)
-      } else {
-        console.log("[v0] No FID from sign-in, using test FID")
-        setFid(279474)
+      // Try miniapp SDK first
+      if (sdkRef.current.signIn) {
+        const result = await sdkRef.current.signIn()
+        if (result?.fid) {
+          setFid(result.fid)
+          console.log("[v0] Signed in with miniapp SDK, FID:", result.fid)
+          return
+        }
       }
+
+      // Fallback to frame SDK
+      if (sdkRef.current.actions?.signIn) {
+        const result = await sdkRef.current.actions.signIn()
+        const userFid = result?.fid || result?.data?.fid || result?.user?.fid
+
+        if (userFid) {
+          setFid(userFid)
+          console.log("[v0] Signed in with frame SDK, FID:", userFid)
+          return
+        }
+      }
+
+      console.log("[v0] Sign-in failed, using test FID")
+      setFid(279474)
     } catch (error) {
       console.error("[v0] Sign-in failed:", error)
       setFid(279474)
