@@ -194,45 +194,41 @@ export default function Home() {
           </div>
 
           {/* Main Content */}
-          <div className="flex flex-col items-center justify-center min-h-screen px-3 sm:px-4 text-center py-8 sm:py-0">
+          <div className="flex flex-col items-center justify-center h-screen px-3 sm:px-4 text-center py-6 sm:py-4">
             {/* Hero Section */}
-            <div className="mb-4 sm:mb-8 space-y-2 sm:space-y-4 max-w-2xl">
-              <div className="inline-block rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 px-3 py-1">
-                <p className="text-[10px] sm:text-sm font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                  🚀 Farcaster and Base app • Gaming on Base
+            <div className="mb-2 sm:mb-3 space-y-1.5 sm:space-y-2 max-w-xl">
+              <div className="inline-block rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 px-2 py-0.5">
+                <p className="text-[8px] sm:text-xs font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                  🚀 Farcaster and Base app
                 </p>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black bg-gradient-to-r from-cyan-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent drop-shadow-lg">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-cyan-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent">
                 2048
               </h1>
 
-              <p className="text-sm sm:text-base lg:text-lg text-gray-300 max-w-xl">
-                Play on Farcaster and Base app. Connect wallet, pay 0.001 USDC, compete and win!
+              <p className="text-xs sm:text-sm text-gray-300 max-w-lg leading-tight">
+                Play, pay 0.001 USDC, compete on Base
               </p>
 
               {/* Status Section */}
-              <div className="mt-4 sm:mt-6 space-y-2">
-                <div className="rounded-lg sm:rounded-xl bg-gradient-to-br from-slate-800/50 to-slate-700/50 border border-cyan-500/20 p-3 sm:p-4">
-                  <div className="flex items-center justify-center gap-2 mb-2 sm:mb-3">
-                    <div className={`w-2.5 h-2.5 rounded-full ${isConnected ? 'bg-green-400 animate-pulse' : 'bg-gray-600'}`} />
-                    <span className="text-xs sm:text-sm text-gray-300">
-                      {isConnected ? 'Base Wallet Connected' : 'Ready to Connect'}
+              <div className="mt-2 sm:mt-3">
+                <div className="rounded-lg bg-gradient-to-br from-slate-800/50 to-slate-700/50 border border-cyan-500/20 p-2 sm:p-2.5">
+                  <div className="flex items-center justify-center gap-1.5 mb-1 sm:mb-2">
+                    <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-400 animate-pulse' : 'bg-gray-600'}`} />
+                    <span className="text-[10px] sm:text-xs text-gray-300">
+                      {isConnected ? 'Connected' : 'Ready'}
                     </span>
                   </div>
 
-                  <div className="space-y-1 sm:space-y-1.5 text-[10px] sm:text-xs text-gray-400">
-                    <div className="flex items-center gap-2">
-                      <span className="text-cyan-400 flex-shrink-0">→</span>
-                      <span>Connect Base wallet</span>
+                  <div className="space-y-0.5 text-[8px] sm:text-[10px] text-gray-400">
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-cyan-400">→</span>
+                      <span>Connect wallet</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-cyan-400 flex-shrink-0">→</span>
-                      <span>Pay 0.001 USDC</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-cyan-400 flex-shrink-0">→</span>
-                      <span>Share on Farcaster</span>
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-cyan-400">→</span>
+                      <span>Pay • Play • Win</span>
                     </div>
                   </div>
                 </div>
@@ -242,13 +238,13 @@ export default function Home() {
               {isConnected ? (
                 <button
                   onClick={handlePlayClick}
-                  className="mt-4 sm:mt-6 w-full px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-bold text-white bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 transition-all duration-200 shadow-lg hover:shadow-cyan-500/40 text-sm sm:text-base"
+                  className="mt-2 sm:mt-3 w-full px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg font-bold text-white bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 transition-all duration-200 shadow-lg text-xs sm:text-sm"
                 >
                   Play Now
                 </button>
               ) : (
-                <div className="mt-4 text-xs sm:text-sm text-gray-400">
-                  Connect your Base wallet to start
+                <div className="mt-2 text-[8px] sm:text-xs text-gray-400">
+                  Connect wallet to start
                 </div>
               )}
             </div>
