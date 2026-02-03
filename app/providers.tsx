@@ -9,8 +9,11 @@ import { OnchainKitProvider } from "@coinbase/onchainkit"
 import { base } from "wagmi/chains"
 import { useState } from "react"
 
-export function Providers({ children, apiKey = "" }: { children: React.ReactNode; apiKey?: string }) {
+export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
+
+  // NEXT_PUBLIC_ONCHAINKIT_API_KEY is intentionally public for client-side SDK usage
+  const apiKey = process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY || ""
 
   return (
     <OnchainKitProvider

@@ -3,9 +3,8 @@ import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
-import { ProvidersWrapper } from "@/app/providers-wrapper"
+import { Providers } from "@/app/providers"
 import { ThemeProvider } from "@/components/ThemeProvider"
-import Providers from "@/app/providers" // Declare the Providers variable
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -73,10 +72,10 @@ export default function RootLayout({
       </head>
       <body className={`font-sans antialiased`}>
         <ThemeProvider>
-          <ProvidersWrapper>
+          <Providers>
             {children}
             <Analytics />
-          </ProvidersWrapper>
+          </Providers>
         </ThemeProvider>
       </body>
     </html>
