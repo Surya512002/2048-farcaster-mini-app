@@ -9,8 +9,8 @@ import { Onboarding } from "@/components/Onboarding"
 import { Button } from "@/components/ui/button"
 import { useAccount } from "wagmi"
 import { useTheme } from "@/components/ThemeProvider"
+import { useMiniKit } from "@coinbase/onchainkit/minikit"
 import { Moon, Sun } from "lucide-react"
-import { FarcasterSDK } from "@farcaster/frame-sdk" // Declare FarcasterSDK
 
 const isPreviewEnvironment = () => {
   if (typeof window === "undefined") return true
@@ -37,6 +37,7 @@ export default function Home() {
   const [isLoadingSignIn, setIsLoadingSignIn] = useState(false)
   const { isConnected } = useAccount()
   const { theme, toggleTheme } = useTheme()
+  const { setFrameReady, context } = useMiniKit()
 
   const sdkRef = useRef<any>(null)
   const ThemeToggleButton = () => (
@@ -50,97 +51,44 @@ export default function Home() {
   )
 
   useEffect(() => {
-    async function initSDK() {
-      try {
-        if (!isPreviewEnvironment()) {
-          // Try to use miniapp SDK for Base mini apps
-          try {
-            const { sdk } = await import("@farcaster/miniapp-sdk")
-            sdkRef.current = sdk
-            console.log("[v0] Initialized Farcaster Miniapp SDK")
-            
-            // Call ready to signal app is loaded
-            await sdk.ready()
-            setSdkLoaded(true)
-            console.log("[v0] Miniapp SDK ready() called successfully")
-            
-            // Get context information
-            const context = sdk.context
-            if (context?.user?.fid) {
-              setFid(context.user.fid)
-              console.log("[v0] Got user FID from context:", context.user.fid)
-            }
-            
-            // Auto-start game if in frame
-            if (isInFarcasterFrame()) {
-              console.log("[v0] In Farcaster frame - auto-starting game")
-              setGameStarted(true)
-              setPaymentComplete(true)
-            }
-          } catch (error) {
-            console.log("[v0] Miniapp SDK failed, trying frame SDK:", error)
-            // Fallback to frame SDK
-            try {
-              const { default: sdk } = await import("@farcaster/frame-sdk")
-              sdkRef.current = sdk
-              console.log("[v0] Using Farcaster Frame SDK")
-              
-              await sdk.actions?.ready?.()
-              setSdkLoaded(true)
-              console.log("[v0] Frame SDK ready() called successfully")
-            } catch (frameError) {
-              console.log("[v0] Frame SDK also failed:", frameError)
-              setSdkLoaded(false)
-            }
-          }
-        } else {
-          console.log("[v0] Preview environment - SDK disabled")
-          setSdkLoaded(false)
-        }
-      } catch (error) {
-        console.error("[v0] SDK initialization error:", error)
-        setSdkLoaded(false)
-      }
+    // Signal frame readiness to MiniKit
+    if (setFrameReady) {
+      setFrameReady()
+      console.log("[v0] MiniKit frame ready signal sent")
     }
 
-    initSDK()
-  }, [])
+    // Extract user FID from MiniKit context
+    if (context?.user?.fid) {
+      setFid(parseInt(context.user.fid))
+      console.log("[v0] Got user FID from MiniKit context:", context.user.fid)
+    }
+
+    setSdkLoaded(true)
+    console.log("[v0] MiniKit initialized successfully")
+
+    // Auto-start game if in Base app
+    if (!isPreviewEnvironment() && context) {
+      console.log("[v0] In Base mini app context - ready to play")
+      setGameStarted(false) // Let user see onboarding first
+    }
+  }, [context, setFrameReady])
 
   const handleSignIn = async () => {
     setIsLoadingSignIn(true)
     try {
-      if (!sdkRef.current) {
-        console.log("[v0] SDK not available - using test FID for preview")
+      // MiniKit automatically provides authenticated context
+      // User is already signed in if FID is available
+      if (context?.user?.fid) {
+        const userFid = parseInt(context.user.fid)
+        setFid(userFid)
+        console.log("[v0] Already authenticated with FID:", userFid)
+      } else {
+        // Fallback for preview environment
+        console.log("[v0] No MiniKit context, using test FID")
         setFid(279474)
-        return
       }
-
-      // Try miniapp SDK first
-      if (sdkRef.current.signIn) {
-        const result = await sdkRef.current.signIn()
-        if (result?.fid) {
-          setFid(result.fid)
-          console.log("[v0] Signed in with miniapp SDK, FID:", result.fid)
-          return
-        }
-      }
-
-      // Fallback to frame SDK
-      if (sdkRef.current.actions?.signIn) {
-        const result = await sdkRef.current.actions.signIn()
-        const userFid = result?.fid || result?.data?.fid || result?.user?.fid
-
-        if (userFid) {
-          setFid(userFid)
-          console.log("[v0] Signed in with frame SDK, FID:", userFid)
-          return
-        }
-      }
-
-      console.log("[v0] Sign-in failed, using test FID")
-      setFid(279474)
     } catch (error) {
-      console.error("[v0] Sign-in failed:", error)
+      console.error("[v0] Sign-in error:", error)
       setFid(279474)
     } finally {
       setIsLoadingSignIn(false)

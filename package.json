@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@coinbase/onchainkit": "1.1.2",
     "@farcaster/frame-sdk": "0.1.12",
     "@farcaster/miniapp-sdk": "latest",
     "@farcaster/miniapp-wagmi-connector": "^0.0.0-canary-20250630212339",
