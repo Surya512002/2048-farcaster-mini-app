@@ -137,9 +137,6 @@ importers:
       embla-carousel-react:
         specifier: 8.5.1
         version: 8.5.1(react@19.2.0)
-      hardhat:
-        specifier: 3.1.6
-        version: 3.1.6(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       input-otp:
         specifier: 1.4.1
         version: 1.4.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -211,6 +208,9 @@ importers:
       '@types/react-dom':
         specifier: ^19
         version: 19.2.3(@types/react@19.2.10)
+      hardhat:
+        specifier: 3.1.6
+        version: 3.1.6(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       postcss:
         specifier: ^8.5
         version: 8.5.6
