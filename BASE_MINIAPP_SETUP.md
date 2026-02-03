@@ -38,9 +38,9 @@ The app is configured with the following components for Base mini app support:
 
 ### Environment Variables Required
 
-```
+\`\`\`
 NEXT_PUBLIC_ONCHAINKIT_API_KEY=<your-api-key>
-```
+\`\`\`
 
 Get your API key from: https://keys.coinbase.com/
 

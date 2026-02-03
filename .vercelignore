@@ -1,0 +1,6 @@
+contracts/
+scripts/
+hardhat.config.js
+*.sol
+SMART_CONTRACT_DEPLOYMENT.md
+BASE_MINIAPP_SETUP.md
