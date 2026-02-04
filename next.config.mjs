@@ -15,13 +15,6 @@ const nextConfig = {
     }
     return config
   },
-  turbopack: {
-    resolveAlias: {
-      fs: false,
-      path: false,
-      os: false,
-    },
-  },
 }
 
 export default nextConfig
