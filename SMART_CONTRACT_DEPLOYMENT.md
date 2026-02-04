@@ -20,22 +20,22 @@ The `Game2048Fee` contract:
 
 ## Installation
 
-```bash
+\`\`\`bash
 # Install Hardhat and dependencies
 npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox @openzeppelin/contracts dotenv
 
 # Or with pnpm
 pnpm add -D hardhat @nomicfoundation/hardhat-toolbox @openzeppelin/contracts dotenv
-```
+\`\`\`
 
 ## Environment Setup
 
 Create a `.env.local` file in your project root:
 
-```env
+\`\`\`env
 PRIVATE_KEY=your_private_key_here
 BASE_RPC_URL=https://mainnet.base.org
-```
+\`\`\`
 
 ## Deployment Steps
 
@@ -43,7 +43,7 @@ BASE_RPC_URL=https://mainnet.base.org
 
 Create `hardhat.config.js`:
 
-```javascript
+\`\`\`javascript
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
 
@@ -71,14 +71,14 @@ module.exports = {
     ],
   },
 };
-```
+\`\`\`
 
 ### 2. Deploy Contract
 
-```bash
+\`\`\`bash
 # Deploy to Base Network
 npx hardhat run scripts/deployGame2048Fee.js --network base
-```
+\`\`\`
 
 This will:
 1. Deploy the contract
@@ -88,9 +88,9 @@ This will:
 
 ### 3. Verify Contract on BaseScan
 
-```bash
+\`\`\`bash
 npx hardhat verify --network base CONTRACT_ADDRESS "0xB4BD7D410543cB27f42c562ab3fF5DC12fBDd42F"
-```
+\`\`\`
 
 ## Integration with Game
 
@@ -98,17 +98,17 @@ npx hardhat verify --network base CONTRACT_ADDRESS "0xB4BD7D410543cB27f42c562ab3
 
 Update `lib/constants.ts` with your deployed contract:
 
-```typescript
+\`\`\`typescript
 export const GAME_FEE_CONTRACT = "0x..." // Your deployed contract address
 export const GAME_FEE_AMOUNT_USDC = "0.001"
 export const GAME_FEE_AMOUNT_WEI = "1000"
-```
+\`\`\`
 
 ### Update PaymentModal
 
 Modify `components/PaymentModal.tsx` to use the contract:
 
-```typescript
+\`\`\`typescript
 import { useContractWrite } from "wagmi"
 
 // Inside component
@@ -125,7 +125,7 @@ const handlePayment = async () => {
   // Then pay fee
   await payGameFee()
 }
-```
+\`\`\`
 
 ## Security Features
 
@@ -164,9 +164,9 @@ const handlePayment = async () => {
 
 Before mainnet deployment, test on Base Sepolia:
 
-```bash
+\`\`\`bash
 npx hardhat run scripts/deployGame2048Fee.js --network baseSepolia
-```
+\`\`\`
 
 ## Troubleshooting
 
