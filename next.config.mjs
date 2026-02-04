@@ -6,6 +6,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Turbopack configuration for Next.js 16 (default bundler)
+  turbopack: {},
+  // Webpack fallback for compatibility
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
@@ -14,13 +17,6 @@ const nextConfig = {
       os: false,
     }
     return config
-  },
-  turbopack: {
-    resolveAlias: {
-      fs: false,
-      path: false,
-      os: false,
-    },
   },
 }
 

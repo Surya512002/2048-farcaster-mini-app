@@ -27,6 +27,16 @@ const isInFarcasterFrame = () => {
   return window.parent !== window && !window.location.hostname.includes("vusercontent.net")
 }
 
+const ThemeToggleButton = ({ theme, toggleTheme }: { theme: string; toggleTheme: () => void }) => (
+  <button
+    onClick={toggleTheme}
+    className="fixed left-4 top-4 p-2 rounded-lg hover:bg-[#ff00ff]/20 transition-colors border border-[#4dd9ff]/50"
+    aria-label="Toggle theme"
+  >
+    {theme === "light" ? <Moon className="w-6 h-6 text-[#4dd9ff]" /> : <Sun className="w-6 h-6 text-[#ffff00]" />}
+  </button>
+)
+
 export default function Home() {
   const [sdkLoaded, setSdkLoaded] = useState(false)
   const [fid, setFid] = useState<number | null>(null)
@@ -40,15 +50,6 @@ export default function Home() {
   const { setFrameReady, context } = useMiniKit()
 
   const sdkRef = useRef<any>(null)
-  const ThemeToggleButton = () => (
-    <button
-      onClick={toggleTheme}
-      className="fixed left-4 top-4 p-2 rounded-lg hover:bg-[#ff00ff]/20 transition-colors border border-[#4dd9ff]/50"
-      aria-label="Toggle theme"
-    >
-      {theme === "light" ? <Moon className="w-6 h-6 text-[#4dd9ff]" /> : <Sun className="w-6 h-6 text-[#ffff00]" />}
-    </button>
-  )
 
   useEffect(() => {
     // Signal frame readiness to MiniKit
@@ -144,7 +145,7 @@ export default function Home() {
       {showPaymentModal && <PaymentModal fid={fid} onPaymentSuccess={handlePaymentSuccess} address={null} />}
 
       {/* Theme Toggle */}
-      <ThemeToggleButton />
+      <ThemeToggleButton theme={theme} toggleTheme={toggleTheme} />
 
       {!gameStarted ? (
         <>
