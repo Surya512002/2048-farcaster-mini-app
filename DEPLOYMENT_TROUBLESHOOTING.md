@@ -40,32 +40,32 @@ Your pull request adds smart contract functionality for game fee collection. The
 ### Step 2: Common Build Issues
 
 **Issue: "Module not found" errors**
-```
+\`\`\`
 Solution: Ensure all imports use correct @/ path aliases
 Check: app/layout.tsx, app/providers.tsx, app/page.tsx
-```
+\`\`\`
 
 **Issue: "@coinbase/onchainkit" import errors**
-```
+\`\`\`
 Solution: Verify package.json has correct version
 Command: npm list @coinbase/onchainkit
-```
+\`\`\`
 
 **Issue: Wagmi or viem import errors**
-```
+\`\`\`
 Solution: Check versions are compatible
 Ensure: wagmi, viem, @coinbase/onchainkit versions match
-```
+\`\`\`
 
 ### Step 3: Local Build Test
-```bash
+\`\`\`bash
 # Clear cache and rebuild locally
 rm -rf .next
 npm run build
 
 # If that works, it's likely a Vercel environment issue
 # Try redeploying
-```
+\`\`\`
 
 ## Smart Contract Integration
 
@@ -76,13 +76,13 @@ The smart contract files are properly excluded from Vercel deployment:
 
 ## Environment Variables Required
 
-```
+\`\`\`
 NEXT_PUBLIC_SUPABASE_URL=your_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
 SUPABASE_SERVICE_ROLE_KEY=your_key
 POSTGRES_URL=your_url
 NEXT_PUBLIC_ONCHAINKIT_API_KEY=your_key
-```
+\`\`\`
 
 All set in your Vercel project's Settings > Environment Variables.
 
