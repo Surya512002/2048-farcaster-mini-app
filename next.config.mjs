@@ -6,6 +6,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Turbopack configuration for Next.js 16 (default bundler)
+  turbopack: {},
+  // Webpack fallback for compatibility
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
